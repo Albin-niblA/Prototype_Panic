@@ -18,12 +18,14 @@ public class MainMenu {
         Text title = new Text("Prototype Panic");
         title.setFont(new Font(40));
 
-        VBox layout = new VBox(20);
+        VBox layout = new VBox(20); // Spacing mellan varje knapp
         layout.setAlignment(Pos.CENTER);
         layout.getChildren().add(title);
 
         for (ButtonType type : ButtonType.values()) {
             Button btn = new Button(type.getLabel());
+            btn.setPrefWidth(200);
+            btn.setPrefHeight(50);
             btn.setOnAction(e -> listener.onButtonClicked(type));
             layout.getChildren().add(btn);
         }
