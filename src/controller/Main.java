@@ -27,7 +27,7 @@ public class Main extends Application implements GameListener {
         switch (type) {
             case START -> new GamePanel(stage).show();
             case EXIT  -> Platform.exit();
-            default    -> { /* Settings och Scoreboard ej implementerat än */ }
+            default    -> { } // Settings och Statistics
         }
     }
 

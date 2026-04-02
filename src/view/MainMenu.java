@@ -15,6 +15,8 @@ public class MainMenu {
     public MainMenu(Stage stage, GameListener listener) {
         this.stage = stage;
 
+
+
         Text title = new Text("Prototype Panic");
         title.setFont(new Font(40));
 
