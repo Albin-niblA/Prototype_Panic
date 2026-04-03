@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.Player;
 import model.Projectile;
+import model.ProjectileManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,6 +22,7 @@ public class GamePanel {
     private final Scene scene;
     private final int WIDTH = 800;
     private final int HEIGHT = 600;
+    private final ProjectileManager pm = new ProjectileManager(WIDTH, HEIGHT);
 
     private final Player player = new Player(WIDTH / 2.0, HEIGHT / 2.0);
     private final List<Projectile> projectiles = new ArrayList<>();
@@ -89,16 +91,19 @@ public class GamePanel {
         if (shootCooldown > 0) shootCooldown -= delta;
 
         if (shooting && shootCooldown <= 0) {
-            projectiles.add(new Projectile(player.getX(), player.getY(), mouseX, mouseY));
+            pm.addProjectile(player.getX(), player.getY(), 8, mouseX, mouseY, 1000,0, 0);
+            //projectiles.add(new Projectile(player.getX(), player.getY(), mouseX, mouseY));
             shootCooldown = SHOOT_INTERVAL;
         }
-
+        pm.update(delta);
+        /*
         Iterator<Projectile> it = projectiles.iterator();
         while (it.hasNext()) {
             Projectile p = it.next();
             p.update(delta, WIDTH, HEIGHT);
             if (p.isDead()) it.remove();
         }
+         */
     }
 
     private void render(GraphicsContext gc) {
@@ -108,7 +113,8 @@ public class GamePanel {
         gc.fillRect(0, 0, WIDTH, HEIGHT);
 
         // Projektiler
-        for (Projectile p : projectiles) p.draw(gc);
+        //for (Projectile p : projectiles) p.draw(gc);
+        pm.drawAll(gc);
 
         // Spelare
         player.draw(gc);
