@@ -2,26 +2,50 @@ package model;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 public class Player extends Entity {
     private boolean moveUp;
     private boolean moveDown;
     private boolean moveLeft;
     private boolean moveRight;
+    private int moveDir = 0;
+    private final int PLAYER_TEXTURES = 4;
+
+    private final Image[] playerTextures = new Image[PLAYER_TEXTURES];
+    private void initTextures() {
+        playerTextures[0] = new Image(getClass().getResourceAsStream("/util/images/player/pFront.png"));
+        playerTextures[1] = new Image(getClass().getResourceAsStream("/util/images/player/pBack.png"));
+        playerTextures[2] = new Image(getClass().getResourceAsStream("/util/images/player/pLeft.png"));
+        playerTextures[3] = new Image(getClass().getResourceAsStream("/util/images/player/pRight.png"));
+    }
 
     public Player(double startX, double startY){
         this.x = startX;
         this.y = startY;
+        initTextures();
     }
 
     public void update(double deltaTime, double mapWidth, double mapHeight){
         double dx = 0;
         double dy = 0;
 
-        if(moveUp) dy -= 1;
-        if(moveDown) dy += 1;
-        if(moveLeft) dx -= 1;
-        if(moveRight) dx += 1;
+        if(moveUp) {
+            dy -= 1;
+            moveDir = 1;
+        }
+        if(moveDown) {
+            dy += 1;
+            moveDir = 0;
+        }
+        if(moveLeft) {
+            dx -= 1;
+            moveDir = 2;
+        }
+        if(moveRight) {
+            dx += 1;
+            moveDir = 3;
+        }
 
         // Normalize diagonal movement so speed is consistent in all 8 directions
         if(dx != 0 && dy != 0){
@@ -41,13 +65,8 @@ public class Player extends Entity {
     }
 
     public void draw(GraphicsContext gc){
-        gc.setFill(Color.CORNFLOWERBLUE);
-
-        gc.fillOval(x - size / 2, y - size / 2, size, size);
-
-        gc.setStroke(Color.WHITE);
-        gc.setLineWidth(2);
-        gc.strokeOval(x - size / 2, y - size / 2, size, size);
+        Image currentTexture = playerTextures[moveDir];
+        gc.drawImage(currentTexture, x - size / 2,  y - size / 2, size, size);
     }
 
     public boolean isDead() { return health <= 0; }
