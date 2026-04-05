@@ -7,6 +7,9 @@ import view.ButtonType;
 import view.GameListener;
 import view.GamePanel;
 import view.MainMenu;
+import view.WeaponSelectDialog;
+
+
 
 public class Main extends Application implements GameListener {
 
@@ -25,8 +28,11 @@ public class Main extends Application implements GameListener {
     @Override
     public void onButtonClicked(ButtonType type) {
         switch (type) {
-            case START -> new GamePanel(stage).show();
-            case EXIT  -> Platform.exit();
+            case START -> {
+                WeaponSelectDialog dialog = new WeaponSelectDialog(stage);
+                int weaponId = dialog.showAndWait();
+                new GamePanel(stage, weaponId).show();
+            }            case EXIT  -> Platform.exit();
             default    -> { } // Settings och Statistics
         }
     }

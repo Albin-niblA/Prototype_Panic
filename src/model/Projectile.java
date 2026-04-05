@@ -10,7 +10,7 @@ public class Projectile {
     private double vy;
     private boolean dead = false;
 
-    private static final double SPEED = 400;
+    private static final double SPEED = 1;
     private static final double RADIUS = 6;
 
     public Projectile(double startX, double startY, double targetX, double targetY) {

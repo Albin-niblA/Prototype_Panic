@@ -32,11 +32,12 @@ public class GamePanel {
     private double mouseY = 0;
     private boolean shooting = false;
 
-    private double shootCooldown = 0;
-    private static final double SHOOT_INTERVAL = 0.08;
+    private double shootCooldown = 0.2;
+    private static final double SHOOT_INTERVAL = 0.18;
 
-    public GamePanel(Stage stage) {
+    public GamePanel(Stage stage, int initialWeapon) {
         this.stage = stage;
+        this.projectileTexture = initialWeapon;
 
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -84,13 +85,10 @@ public class GamePanel {
             mouseY = e.getY();
         });
 
-        scene.setOnMousePressed(e -> {
-            if (e.getButton() == MouseButton.PRIMARY) shooting = true;
+        scene.setOnMouseClicked(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) shooting = !shooting;
         });
 
-        scene.setOnMouseReleased(e -> {
-            if (e.getButton() == MouseButton.PRIMARY) shooting = false;
-        });
     }
 
     private void update(double delta) {
