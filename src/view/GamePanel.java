@@ -97,24 +97,6 @@ public class GamePanel {
     }
 
     private void update(double delta) {
-     /*   player.update(delta, WIDTH, HEIGHT);
-
-        if (shootCooldown > 0) shootCooldown -= delta;
-
-        if (shooting && shootCooldown <= 0) {
-            pm.addProjectile(player.getX(), player.getY(), 10, mouseX, mouseY, 1000, projectileTexture, 0);
-            //projectiles.add(new Projectile(player.getX(), player.getY(), mouseX, mouseY));
-            shootCooldown = SHOOT_INTERVAL;
-        }
-        pm.update(delta);*/
-        /*
-        Iterator<Projectile> it = projectiles.iterator();
-        while (it.hasNext()) {
-            Projectile p = it.next();
-            p.update(delta, WIDTH, HEIGHT);
-            if (p.isDead()) it.remove();
-        }
-         */
         player.update(delta, WIDTH, HEIGHT);
 
         if (shootCooldown > 0) shootCooldown -= delta;
@@ -154,7 +136,6 @@ public class GamePanel {
         gc.fillRect(0, 0, WIDTH, HEIGHT);
 
         // Projektiler
-        //for (Projectile p : projectiles) p.draw(gc);
         pm.drawAll(gc);
 
         // Spelare
