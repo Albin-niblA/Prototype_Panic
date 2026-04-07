@@ -27,7 +27,7 @@ public class GamePanel {
     private final ProjectileManager pm = new ProjectileManager(WIDTH, HEIGHT);
     private int projectileTexture = 0;
     private double spawnTimer = 0;
-    private static final double SPAWN_INTERVAL = 3.0; // seconds
+    private static final double SPAWN_INTERVAL = 3.0;
 
     private final Player player = new Player(WIDTH / 2.0, HEIGHT / 2.0);
     private final List<Projectile> projectiles = new ArrayList<>();
@@ -37,7 +37,7 @@ public class GamePanel {
     private boolean shooting = false;
 
     private double shootCooldown = 0.2;
-    private static final double SHOOT_INTERVAL = 0.18;
+    private static final double SHOOT_INTERVAL = 0.02;
 
     public GamePanel(Stage stage, int initialWeapon) {
         this.stage = stage;
@@ -97,24 +97,6 @@ public class GamePanel {
     }
 
     private void update(double delta) {
-     /*   player.update(delta, WIDTH, HEIGHT);
-
-        if (shootCooldown > 0) shootCooldown -= delta;
-
-        if (shooting && shootCooldown <= 0) {
-            pm.addProjectile(player.getX(), player.getY(), 10, mouseX, mouseY, 1000, projectileTexture, 0);
-            //projectiles.add(new Projectile(player.getX(), player.getY(), mouseX, mouseY));
-            shootCooldown = SHOOT_INTERVAL;
-        }
-        pm.update(delta);*/
-        /*
-        Iterator<Projectile> it = projectiles.iterator();
-        while (it.hasNext()) {
-            Projectile p = it.next();
-            p.update(delta, WIDTH, HEIGHT);
-            if (p.isDead()) it.remove();
-        }
-         */
         player.update(delta, WIDTH, HEIGHT);
 
         if (shootCooldown > 0) shootCooldown -= delta;
@@ -141,9 +123,22 @@ public class GamePanel {
             double pr = pm.getRadius(i);
 
             if (eh.checkHit(px, py, pr)) {
-                pm.deleteProjectile(i--); // remove projectile on hit
+                pm.deleteProjectile(i--);
             }
         }
+
+        if (eh.checkPlayerHit(player.getX(), player.getY(), player.getSize() / 2)) {
+            resetGame();
+        }
+    }
+
+    private void resetGame() {
+        player.reset(WIDTH / 2.0, HEIGHT / 2.0);
+        pm.clear();
+        eh.clear();
+        eh.spawnRandom(0);
+        shootCooldown = 0;
+        shooting = false;
     }
 
 

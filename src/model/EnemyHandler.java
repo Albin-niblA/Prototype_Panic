@@ -49,12 +49,29 @@ public class EnemyHandler {
             double dist = Math.sqrt(dx * dx + dy * dy);
 
             if (dist < pr + e.getSize() / 2) {
-                e.takeDamage(100);
+                e.takeDamage(100); // one-shot, lower for multi-hit
                 if (e.isDead()) it.remove();
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean checkPlayerHit(double px, double py, double pr) {
+        for (Enemy e : enemies) {
+            double dx = px - e.getX();
+            double dy = py - e.getY();
+            double dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < pr + e.getSize() / 2) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void clear() {
+        enemies.clear();
     }
 
     public void drawAll(GraphicsContext gc) {

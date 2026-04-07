@@ -133,6 +133,10 @@ public class ProjectileManager {
         }
     }
 
+    public void clear() {
+        projectileCount = 0;
+    }
+
     public int getCount() { return projectileCount; }
     public double getX(int i) { return posX[i]; }
     public double getY(int i) { return posY[i]; }

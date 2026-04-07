@@ -4,6 +4,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class Player extends Entity {
     private boolean moveUp;
     private boolean moveDown;
@@ -11,6 +14,7 @@ public class Player extends Entity {
     private boolean moveRight;
     private int moveDir = 0;
     private final int PLAYER_TEXTURES = 4;
+    private ArrayList<Player> players = new ArrayList<>();
 
     private final Image[] playerTextures = new Image[PLAYER_TEXTURES];
     private void initTextures() {
@@ -47,6 +51,8 @@ public class Player extends Entity {
             moveDir = 3;
         }
 
+
+
         // Normalize diagonal movement so speed is consistent in all 8 directions
         if(dx != 0 && dy != 0){
             double factor = 1.0 / Math.sqrt(2);
@@ -64,10 +70,19 @@ public class Player extends Entity {
 
     }
 
+
     public void draw(GraphicsContext gc){
         Image currentTexture = playerTextures[moveDir];
         gc.drawImage(currentTexture, x - size / 2,  y - size / 2, size, size);
     }
+
+    public void takeDamage(int amount){
+        health -= amount;
+        if (health <= 0 ){
+            isDead();
+        }
+    }
+
 
     public boolean isDead() { return health <= 0; }
 
