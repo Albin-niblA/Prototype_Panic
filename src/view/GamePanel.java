@@ -10,6 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import model.EnemyHandler;
+import model.GameState;
 import model.Player;
 import model.Projectile;
 import model.ProjectileManager;
@@ -43,6 +44,10 @@ public class GamePanel {
     private double shootCooldown = 0.2;
     private static final double SHOOT_INTERVAL = 0.02;
 
+    private GameState gameState = GameState.RUNNING;
+    private final PauseOverlay pauseOverlay = new PauseOverlay(WIDTH, HEIGHT);
+    private Runnable onReturnToMenu;
+
     public GamePanel(Stage stage, int initialWeapon) {
         this.stage = stage;
         this.projectileTexture = initialWeapon;
@@ -64,6 +69,25 @@ public class GamePanel {
     private void setupInput(Scene scene) {
         scene.setOnKeyPressed(e -> {
             KeyCode k = e.getCode();
+
+            if (k == KeyCode.ESCAPE) {
+                if (gameState == GameState.RUNNING) pause();
+                else if (gameState == GameState.PAUSED) resume();
+                return;
+            }
+
+            if (k == KeyCode.M && (gameState == GameState.PAUSED || gameState == GameState.GAME_OVER)) {
+                returnToMenu();
+                return;
+            }
+
+            if (k == KeyCode.R && gameState == GameState.GAME_OVER) {
+                resetGame();
+                return;
+            }
+
+            if (gameState != GameState.RUNNING) return;
+
             if (k == KeyCode.W) player.setMoveUp(true);
             if (k == KeyCode.S) player.setMoveDown(true);
             if (k == KeyCode.A) player.setMoveLeft(true);
@@ -96,13 +120,52 @@ public class GamePanel {
         });
 
         scene.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.PRIMARY) shooting = !shooting;
+            if (e.getButton() == MouseButton.PRIMARY && gameState == GameState.RUNNING)
+                shooting = !shooting;
         });
 
         eh.spawnRandom();
     }
 
+    // --- Paus-hantering ---------------------------------------------------
+    // pause() och resume() är publika så de kan anropas utifrån senare,
+    // t.ex. från en upgrade-skärm eller ett pause-menyval.
+
+    public void pause() {
+        if (gameState == GameState.RUNNING) {
+            gameState = GameState.PAUSED;
+            shooting = false;
+            player.setMoveUp(false);
+            player.setMoveDown(false);
+            player.setMoveLeft(false);
+            player.setMoveRight(false);
+        }
+    }
+
+    public void resume() {
+        if (gameState == GameState.PAUSED) {
+            gameState = GameState.RUNNING;
+        }
+    }
+
+    /** Återuppta från ett godtyckligt tillstånd – används t.ex. av upgrade-skärmen. */
+    public void resumeFrom(GameState expected) {
+        if (gameState == expected) gameState = GameState.RUNNING;
+    }
+
+    public GameState getGameState() { return gameState; }
+
+    public void setOnReturnToMenu(Runnable callback) { this.onReturnToMenu = callback; }
+
+    private void returnToMenu() {
+        resetGame();
+        if (onReturnToMenu != null) onReturnToMenu.run();
+    }
+    // ----------------------------------------------------------------------
+
     private void update(double delta) {
+        if (gameState != GameState.RUNNING) return;
+
         player.update(delta, WIDTH, HEIGHT);
 
         if (shootCooldown > 0) shootCooldown -= delta;
@@ -135,7 +198,8 @@ public class GamePanel {
         }
 
         if (eh.checkPlayerHit(player.getX(), player.getY(), player.getSize() / 2)) {
-            resetGame();
+            gameState = GameState.GAME_OVER;
+            shooting = false;
         }
     }
 
@@ -146,6 +210,8 @@ public class GamePanel {
         eh.spawnRandom();
         shootCooldown = 0;
         shooting = false;
+        spawnTimer = 0;
+        gameState = GameState.RUNNING;
     }
 
 
@@ -166,6 +232,9 @@ public class GamePanel {
         // Spelare
         player.draw(gc);
         eh.drawAll(gc);
+
+        // Overlay – ritas sist ovanpå allt (PAUSED, GAME_OVER, osv.)
+        pauseOverlay.draw(gc, gameState);
     }
 
     public void show() {
