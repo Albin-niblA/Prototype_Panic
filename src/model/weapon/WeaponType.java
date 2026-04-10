@@ -3,7 +3,8 @@ package model.weapon;
 public enum WeaponType {
     BULLET("Bullet"),
     ARROW("Arrow"),
-    ROCKET("Rocket");
+    ROCKET("Rocket"),
+    GRENADE("Grenade");
 
     private final String displayName;
 

@@ -33,6 +33,24 @@ public class EnemyHandler {
         return false;
     }
 
+    public int applyAoeDamage(double px, double py, double aoeRadius, int damage) {
+        int hitCount = 0;
+        Iterator<Enemy> it = enemies.iterator();
+        while (it.hasNext()) {
+            Enemy e = it.next();
+            double dx = px - e.getX();
+            double dy = py - e.getY();
+            double dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < aoeRadius + e.getSize() / 2) {
+                e.takeProjectileDamage(damage);
+                hitCount++;
+                if (e.isDead()) it.remove();
+            }
+        }
+        return hitCount;
+    }
+
     public Enemy checkPlayerHit(double px, double py, double pr) {
         for (Enemy e : enemies) {
             double dx = px - e.getX();

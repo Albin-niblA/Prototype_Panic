@@ -78,19 +78,39 @@ public class GameRenderer {
             double px = pm.getX(i) - ox;
             double py = pm.getY(i) - oy;
 
-            if (px < -50 || px > viewportWidth + 50 ||
-                py < -50 || py > viewportHeight + 50) continue;
+            if (px < -200 || px > viewportWidth + 200 ||
+                py < -200 || py > viewportHeight + 200) continue;
 
             double r = pm.getRadius(i);
             int texID = pm.getTextureID(i);
             Image tex = textures.getProjectileTexture(texID);
-            double angle = Math.toDegrees(Math.atan2(pm.getVelY(i), pm.getVelX(i)));
 
-            gc.save();
-            gc.translate(px, py);
-            gc.rotate(angle);
-            gc.drawImage(tex, -r, -r, r * 2, r * 2);
-            gc.restore();
+            if (pm.isGrenade(i)) {
+                // Draw grenade without velocity-based rotation
+                gc.save();
+                gc.translate(px, py);
+                gc.drawImage(tex, -r, -r, r * 2, r * 2);
+                gc.restore();
+
+                // Draw pulsing explosion radius indicator when fuse < 1s
+                double fuseRemaining = pm.getFuseTimer(i);
+                if (fuseRemaining < 1.0) {
+                    double alpha = 0.15 + 0.25 * (1.0 - fuseRemaining);
+                    gc.setStroke(Color.rgb(255, 60, 30, alpha));
+                    gc.setLineWidth(2);
+                    double explosionR = 150;
+                    gc.strokeOval(px - explosionR, py - explosionR,
+                        explosionR * 2, explosionR * 2);
+                }
+            } else {
+                // Normal projectile: rotate by velocity direction
+                double angle = Math.toDegrees(Math.atan2(pm.getVelY(i), pm.getVelX(i)));
+                gc.save();
+                gc.translate(px, py);
+                gc.rotate(angle);
+                gc.drawImage(tex, -r, -r, r * 2, r * 2);
+                gc.restore();
+            }
         }
     }
 

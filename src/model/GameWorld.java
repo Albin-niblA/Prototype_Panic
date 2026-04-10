@@ -48,15 +48,29 @@ public class GameWorld {
         if (shooting && shootCooldown <= 0) {
             double worldMouseX = input.getMouseX() + camera.getOffsetX();
             double worldMouseY = input.getMouseY() + camera.getOffsetY();
-            projectileManager.addProjectile(
-                player.getX(), player.getY(),
-                currentWeapon.getProjectileRadius(),
-                worldMouseX, worldMouseY,
-                currentWeapon.getProjectileSpeed(),
-                currentWeapon.getTextureId(),
-                0,
-                currentWeapon.getDamage()
-            );
+
+            if (currentWeapon.isGrenade()) {
+                projectileManager.addGrenade(
+                    player.getX(), player.getY(),
+                    currentWeapon.getProjectileRadius(),
+                    worldMouseX, worldMouseY,
+                    currentWeapon.getProjectileSpeed(),
+                    currentWeapon.getTextureId(),
+                    0,
+                    currentWeapon.getDamage(),
+                    currentWeapon.getFuseTime()
+                );
+            } else {
+                projectileManager.addProjectile(
+                    player.getX(), player.getY(),
+                    currentWeapon.getProjectileRadius(),
+                    worldMouseX, worldMouseY,
+                    currentWeapon.getProjectileSpeed(),
+                    currentWeapon.getTextureId(),
+                    0,
+                    currentWeapon.getDamage()
+                );
+            }
             shootCooldown = currentWeapon.getFireInterval();
             SoundManager.playShoot();
         }
@@ -65,13 +79,28 @@ public class GameWorld {
         projectileManager.update(delta);
         effectManager.update(now);
         enemyHandler.update(delta, player.getX(), player.getY());
+        checkGrenadeExplosions();
         checkCollisions();
         waveManager.update(delta, enemyHandler, player.getX(), player.getY());
     }
 
-    private void checkCollisions() {
-        // Projectile vs Enemy
+    private void checkGrenadeExplosions() {
         for (int i = 0; i < projectileManager.getCount(); i++) {
+            if (projectileManager.isGrenade(i) && projectileManager.getFuseTimer(i) <= 0) {
+                double px = projectileManager.getX(i);
+                double py = projectileManager.getY(i);
+                int dmg = projectileManager.getDamage(i);
+                enemyHandler.applyAoeDamage(px, py, currentWeapon.getExplosionRadius(), dmg);
+                projectileManager.deleteProjectile(i--);
+            }
+        }
+    }
+
+    private void checkCollisions() {
+        // Projectile vs Enemy (skip grenades — they only damage on explosion)
+        for (int i = 0; i < projectileManager.getCount(); i++) {
+            if (projectileManager.isGrenade(i)) continue;
+
             double px = projectileManager.getX(i);
             double py = projectileManager.getY(i);
             double pr = projectileManager.getRadius(i);
