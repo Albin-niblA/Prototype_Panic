@@ -14,6 +14,7 @@ public class GameWorld {
     private final Player player;
     private final EnemyHandler enemyHandler;
     private final ProjectileManager projectileManager;
+    private final EffectManager effectManager;
     private final WaveManager waveManager;
     private final Weapon currentWeapon;
 
@@ -25,11 +26,12 @@ public class GameWorld {
         player = new Player(WORLD_WIDTH / 2.0, WORLD_HEIGHT / 2.0);
         enemyHandler = new EnemyHandler();
         projectileManager = new ProjectileManager(WORLD_WIDTH, WORLD_HEIGHT);
+        effectManager = new EffectManager();
         waveManager = new WaveManager();
         currentWeapon = Weapon.fromType(weaponType);
     }
 
-    public void update(double delta, InputHandler input, Camera camera) {
+    public void update(double delta, InputHandler input, Camera camera, long now) {
         if (state != GameState.RUNNING) return;
 
         // Player movement
@@ -61,6 +63,7 @@ public class GameWorld {
 
         // Update systems
         projectileManager.update(delta);
+        effectManager.update(now);
         enemyHandler.update(delta, player.getX(), player.getY());
         checkCollisions();
         waveManager.update(delta, enemyHandler, player.getX(), player.getY());
@@ -76,6 +79,7 @@ public class GameWorld {
 
             if (enemyHandler.checkHit(px, py, pr, dmg)) {
                 projectileManager.deleteProjectile(i--);
+                effectManager.addEffect(px, py, 0, System.nanoTime());
             }
         }
 
@@ -130,4 +134,5 @@ public class GameWorld {
     public ProjectileManager getProjectileManager() { return projectileManager; }
     public WaveManager getWaveManager() { return waveManager; }
     public Weapon getCurrentWeapon() { return currentWeapon; }
+    public EffectManager getEffectManager() { return effectManager; }
 }

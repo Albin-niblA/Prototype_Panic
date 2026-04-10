@@ -62,6 +62,9 @@ public class GameRenderer {
             gc.drawImage(eTex, e.getX() - es / 2 - ox, e.getY() - es / 2 - oy, es, es);
         }
 
+        // Effects
+        renderEffects(gc, world.getEffectManager(), ox, oy);
+
         // HUD (screen-space)
         hud.draw(gc, world);
 
@@ -88,6 +91,33 @@ public class GameRenderer {
             gc.rotate(angle);
             gc.drawImage(tex, -r, -r, r * 2, r * 2);
             gc.restore();
+        }
+    }
+
+    private void renderEffects(GraphicsContext gc, EffectManager em,
+                               double ox, double oy) {
+
+        for (int i = 0; i < em.getCount(); i++) {
+            double x = em.getX(i) - ox;
+            double y = em.getY(i) - oy;
+
+            int frame = em.getFrame(i);
+            int fxID = em.getEffectID(i);
+
+            Image sheet = textures.getEffectTexture(fxID);
+
+            int frameWidth = 32;
+            int frameHeight = 32;
+
+            int cols = (int)(sheet.getWidth() / frameWidth);
+
+            int sx = (frame % cols) * frameWidth;
+            int sy = (frame / cols) * frameHeight;
+
+            gc.drawImage(sheet,
+                    sx, sy, frameWidth, frameHeight,
+                    x - frameWidth / 2.0, y - frameHeight / 2.0,
+                    frameWidth, frameHeight);
         }
     }
 }

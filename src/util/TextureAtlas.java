@@ -6,6 +6,7 @@ public class TextureAtlas {
     private final Image[] playerTextures = new Image[4];
     private final Image[] enemyTextures = new Image[2];
     private final Image[] projectileTextures = new Image[3];
+    private final Image[] fxTextures = new Image[1];
 
     public TextureAtlas() {
         playerTextures[0] = load("/util/images/player/pFront.png");
@@ -19,13 +20,45 @@ public class TextureAtlas {
         projectileTextures[0] = load("/util/images/projectiles/bullet1.png");
         projectileTextures[1] = load("/util/images/projectiles/arrow.png");
         projectileTextures[2] = load("/util/images/projectiles/rocket.png");
+
+        fxTextures[0] = load("/util/images/fx/explosion.png");
     }
 
     private Image load(String path) {
         return new Image(getClass().getResourceAsStream(path));
     }
 
+    // laddar spritesheets
+    private Image[] loadSheet(String path, int frameWidth, int frameHeight) {
+        Image sheet = load(path);
+
+        int cols = (int) (sheet.getWidth() / frameWidth);
+        int rows = (int) (sheet.getHeight() / frameHeight);
+        Image[] frames = new Image[cols * rows];
+
+        int index = 0;
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                frames[index++] = new javafx.scene.image.WritableImage(
+                        sheet.getPixelReader(),
+                        x * frameWidth,
+                        y * frameHeight,
+                        frameWidth,
+                        frameHeight
+                );
+            }
+        }
+
+        return frames;
+    }
+
     public Image getPlayerTexture(int dir) { return playerTextures[dir]; }
     public Image getEnemyTexture(int id) { return enemyTextures[id]; }
     public Image getProjectileTexture(int id) { return projectileTextures[id]; }
+    public Image getEffectTexture(int fxID) {
+        switch (fxID) {
+            case 0: return fxTextures[0];
+            default: return fxTextures[0];
+        }
+    }
 }

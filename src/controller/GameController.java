@@ -64,7 +64,7 @@ public class GameController {
                 lastTime = now;
 
                 handleStateInput();
-                world.update(delta, input, camera);
+                world.update(delta, input, camera, now);
                 camera.follow(world.getPlayer());
                 renderer.render(gc, world);
                 input.clearFrameState();
