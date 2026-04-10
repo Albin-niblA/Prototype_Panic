@@ -50,10 +50,11 @@ public class EffectManager {
     }
 
     private int getMaxFrames(int fxID) {
-        switch (fxID) {
-            case 0: return 12;
-            default: return 1;
-        }
+        return switch (fxID) {
+            case 0 -> 12;
+            case 1, 2 -> 7;
+            default -> 0;
+        };
     }
 
     // getters
@@ -62,4 +63,11 @@ public class EffectManager {
     public double getY(int i) { return posY[i]; }
     public int getFrame(int i) { return frame[i]; }
     public int getEffectID(int i) { return fxID[i]; }
+    public int getEffectSize(int fxID) {
+        return switch (fxID) {
+            case 0 -> 32;
+            case 1, 2 -> 96;
+            default -> 1;
+        };
+    }
 }

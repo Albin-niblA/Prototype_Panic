@@ -6,7 +6,7 @@ public class TextureAtlas {
     private final Image[] playerTextures = new Image[4];
     private final Image[] enemyTextures = new Image[2];
     private final Image[] projectileTextures = new Image[4];
-    private final Image[] fxTextures = new Image[1];
+    private final Image[] fxTextures = new Image[3];
 
     public TextureAtlas() {
         playerTextures[0] = load("/util/images/player/pFront.png");
@@ -23,6 +23,8 @@ public class TextureAtlas {
         projectileTextures[3] = load("/util/images/projectiles/grenade.png");
 
         fxTextures[0] = load("/util/images/fx/explosion.png");
+        fxTextures[1] = load("/util/images/fx/blinkStart.png");
+        fxTextures[2] = load("/util/images/fx/blinkEnd.png");
     }
 
     private Image load(String path) {
@@ -57,9 +59,6 @@ public class TextureAtlas {
     public Image getEnemyTexture(int id) { return enemyTextures[id]; }
     public Image getProjectileTexture(int id) { return projectileTextures[id]; }
     public Image getEffectTexture(int fxID) {
-        switch (fxID) {
-            case 0: return fxTextures[0];
-            default: return fxTextures[0];
-        }
+        return fxTextures[fxID];
     }
 }

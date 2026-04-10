@@ -41,6 +41,16 @@ public class GameWorld {
             input.isHeld(KeyCode.A),
             input.isHeld(KeyCode.D)
         );
+
+        // Blink
+        if (input.wasPressed(KeyCode.SPACE)) {
+            double oldX = player.getX();
+            double oldY = player.getY();
+            if (player.tryBlink(WORLD_WIDTH, WORLD_HEIGHT)) {
+                effectManager.addEffect(oldX, oldY, 1, now);
+                effectManager.addEffect(player.getX(), player.getY(), 2, now);
+            }
+        }
         player.update(delta, WORLD_WIDTH, WORLD_HEIGHT);
 
         // Shooting

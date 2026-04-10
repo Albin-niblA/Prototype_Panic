@@ -52,7 +52,9 @@ public class GameRenderer {
         Player p = world.getPlayer();
         Image pTex = textures.getPlayerTexture(p.getMoveDir());
         double ps = p.getSize();
-        gc.drawImage(pTex, p.getX() - ps / 2 - ox, p.getY() - ps / 2 - oy, ps, ps);
+        if (!p.isBlinking()) {
+            gc.drawImage(pTex, p.getX() - ps / 2 - ox, p.getY() - ps / 2 - oy, ps, ps);
+        }
 
         // Enemies
         for (Enemy e : world.getEnemyHandler().getEnemies()) {
@@ -134,10 +136,11 @@ public class GameRenderer {
             int sx = (frame % cols) * frameWidth;
             int sy = (frame / cols) * frameHeight;
 
+            int size = em.getEffectSize(em.getEffectID(i));
             gc.drawImage(sheet,
                     sx, sy, frameWidth, frameHeight,
-                    x - frameWidth / 2.0, y - frameHeight / 2.0,
-                    frameWidth, frameHeight);
+                    x - size / 2.0, y - size / 2.0,
+                    size, size);
         }
     }
 }
