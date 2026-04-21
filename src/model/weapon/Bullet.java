@@ -2,7 +2,7 @@ package model.weapon;
 
 import model.ProjectileManager;
 
-public class Bullet extends Weapon {
+public class Bullet extends Weapon implements Upgrade {
     private static final String NAME = "Bullet";
     private static final int BASE_DAMAGE = 10;
     private static final double BASE_FIRE_INTERVAL = 0.3;
@@ -18,5 +18,10 @@ public class Bullet extends Weapon {
     public void shoot(ProjectileManager pm, double originX, double originY, double targetX, double targetY) {
         pm.addProjectile(originX, originY, getProjectileRadius(), targetX, targetY, getProjectileSpeed(),
                 getTextureId(), 0, getDamage());
+    }
+
+    @Override
+    public void STAGE_ONE_UPGRADE_ONE(){
+        setDamage(getDamage() * 5);
     }
 }
