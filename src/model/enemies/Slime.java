@@ -1,8 +1,11 @@
 package model.enemies;
 
 import model.Enemy;
+import model.Player;
 
 public class Slime extends Enemy {
+
+    Player player;
 
     public Slime(double x, double y) {
         this.x = x;
@@ -13,5 +16,14 @@ public class Slime extends Enemy {
         this.movementSpeed = 30;
         this.contactDamage = 10;
         this.textureID = 0;
+    }
+
+    @Override
+    public void takeProjectileDamage(int amount) {
+        health -= amount;
+        if (health <= 0) {
+            health = 0;
+            dead = true;
+        }
     }
 }

@@ -63,7 +63,7 @@ public class GameWorld {
                     player.getX(), player.getY(),
                     worldMouseX, worldMouseY);
             shootCooldown = currentWeapon.getFireInterval();
-            SoundManager.playShoot();
+            SoundManager.playShoot(currentWeapon.getType());
         }
 
         // Update systems

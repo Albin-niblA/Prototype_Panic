@@ -13,6 +13,7 @@ import model.GameWorld;
 import model.weapon.WeaponType;
 import model.SoundManager;
 import view.GameRenderer;
+import view.PauseOverlay;
 
 public class GameController {
     private final Stage stage;
@@ -29,10 +30,12 @@ public class GameController {
     private long lastTime = -1;
     private Runnable onReturnToMenu;
 
+
     public GameController(Stage stage, int width, int height, WeaponType weaponType) {
         this.stage = stage;
         this.viewportWidth = width;
         this.viewportHeight = height;
+
 
         SoundManager.init();
 
@@ -40,6 +43,10 @@ public class GameController {
         this.world = new GameWorld(weaponType);
         this.input = new InputHandler();
         this.renderer = new GameRenderer(width, height, camera);
+
+        // get the overlay from the renderer, don't create a second one
+        input.setOverlay(renderer.getPauseOverlay());
+        input.setController(this);
 
         Canvas canvas = new Canvas(width, height);
         this.gc = canvas.getGraphicsContext2D();
@@ -56,20 +63,25 @@ public class GameController {
         gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (lastTime < 0) {
-                    lastTime = now;
-                    return;
-                }
+                if (lastTime < 0) { lastTime = now; return; }
                 double delta = (now - lastTime) / 1_000_000_000.0;
                 lastTime = now;
 
                 handleStateInput();
-                world.update(delta, input, camera, now);
-                camera.follow(world.getPlayer());
+
+                if (world.getState() == GameState.RUNNING) {
+                    world.update(delta, input, camera, now);
+                    camera.follow(world.getPlayer());
+                }
+
                 renderer.render(gc, world);
                 input.clearFrameState();
             }
         };
+    }
+
+    public boolean isPaused() {
+        return world.getState() == GameState.PAUSED;
     }
 
     private void handleStateInput() {

@@ -23,7 +23,9 @@ public class GameRenderer {
         this.textures = new TextureAtlas();
         this.hud = new HUD(viewportWidth, viewportHeight);
         this.pauseOverlay = new PauseOverlay(viewportWidth, viewportHeight);
+
     }
+
 
     public void render(GraphicsContext gc, GameWorld world) {
         double ox = camera.getOffsetX();
@@ -144,5 +146,9 @@ public class GameRenderer {
                     x - size / 2.0, y - size / 2.0,
                     size, size);
         }
+    }
+
+    public PauseOverlay getPauseOverlay() {
+        return pauseOverlay;
     }
 }
