@@ -75,6 +75,7 @@ public class GameWorld {
         waveManager.update(delta, enemyHandler, player.getX(), player.getY());
     }
 
+
     private void checkGrenadeExplosions() {
         for (int i = 0; i < projectileManager.getCount(); i++) {
             if (projectileManager.isGrenade(i) && projectileManager.getFuseTimer(i) <= 0) {
