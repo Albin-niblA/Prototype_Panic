@@ -3,6 +3,7 @@ package controller;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import view.PauseOverlay;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,6 +14,11 @@ public class InputHandler {
     private double mouseX;
     private double mouseY;
     private boolean mouseClicked = false;
+    private boolean mouseDragging = false;
+
+
+    private PauseOverlay overlay;
+    private GameController controller;
 
     public void attachTo(Scene scene) {
         scene.setOnKeyPressed(e -> {
@@ -32,13 +38,30 @@ public class InputHandler {
         scene.setOnMouseDragged(e -> {
             mouseX = e.getX();
             mouseY = e.getY();
-        });
-
-        scene.setOnMouseClicked(e -> {
-            if (e.getButton() == MouseButton.PRIMARY) {
-                mouseClicked = true;
+            mouseDragging = true;
+            if (controller != null && controller.isPaused() && overlay != null) {
+                overlay.handleMouseX(e.getX(), e.getY());
             }
         });
+
+        scene.setOnMousePressed(e -> {
+            if (e.getButton() == MouseButton.PRIMARY) {
+                if (controller != null && controller.isPaused() && overlay != null) {
+                    overlay.handleMouseClick(e.getX(), e.getY());
+                } else {
+                    mouseClicked = true;
+                }
+            }
+        });
+    }
+
+    // Call this from GameController after creating both overlay and controller
+    public void setOverlay(PauseOverlay overlay) {
+        this.overlay = overlay;
+    }
+
+    public void setController(GameController controller) {
+        this.controller = controller;
     }
 
     public boolean isHeld(KeyCode key) {
@@ -59,5 +82,6 @@ public class InputHandler {
     public void clearFrameState() {
         justPressed.clear();
         mouseClicked = false;
+        mouseDragging = false;
     }
 }

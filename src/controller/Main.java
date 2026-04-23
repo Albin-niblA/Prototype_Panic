@@ -3,11 +3,9 @@ package controller;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import model.Settings;
 import model.weapon.WeaponType;
-import view.ButtonType;
-import view.GameListener;
-import view.MainMenu;
-import view.WeaponSelectDialog;
+import view.*;
 
 public class Main extends Application implements GameListener {
 
@@ -31,9 +29,17 @@ public class Main extends Application implements GameListener {
             case START -> {
                 WeaponSelectDialog dialog = new WeaponSelectDialog(stage);
                 WeaponType weapon = dialog.showAndWait();
-                GameController gc = new GameController(stage, WIDTH, HEIGHT, weapon);
+                GameController gc = new GameController(stage, Settings.getWidth(), Settings.getHeight(), weapon);
                 gc.setOnReturnToMenu(this::showMainMenu);
                 gc.start();
+            }
+            case SETTINGS -> {
+                SettingsMenu settings = new SettingsMenu(stage, this::showMainMenu, WIDTH, HEIGHT);
+                settings.show();
+            }
+            case SCOREBOARD -> {
+
+                System.out.println("Scoreboard");
             }
             case EXIT -> Platform.exit();
             default -> { }

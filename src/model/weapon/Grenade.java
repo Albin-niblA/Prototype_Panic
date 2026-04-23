@@ -2,7 +2,7 @@ package model.weapon;
 
 import model.ProjectileManager;
 
-public class Grenade extends Weapon {
+public class Grenade extends Weapon implements Upgrade {
     private static final String NAME = "Grenade";
     private static final int BASE_DAMAGE = 75;
     private static final double BASE_FIRE_INTERVAL = 3;
@@ -32,4 +32,9 @@ public class Grenade extends Weapon {
     public void setFuseTime(double fuseTime) { this.fuseTime = fuseTime; }
     public double getExplosionRadius() { return explosionRadius; }
     public void setExplosionRadius(double explosionRadius) { this.explosionRadius = explosionRadius; }
+
+    @Override
+    public void STAGE_ONE_UPGRADE_ONE(){
+        setFireInterval(0.5);
+    }
 }

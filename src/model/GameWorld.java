@@ -3,6 +3,8 @@ package model;
 import controller.InputHandler;
 import javafx.scene.input.KeyCode;
 import model.wave.WaveManager;
+import model.weapon.Grenade;
+import model.weapon.Upgrade;
 import model.weapon.Weapon;
 import model.weapon.WeaponType;
 import model.SoundManager;
@@ -63,7 +65,7 @@ public class GameWorld {
                     player.getX(), player.getY(),
                     worldMouseX, worldMouseY);
             shootCooldown = currentWeapon.getFireInterval();
-            SoundManager.playShoot();
+            SoundManager.playShoot(currentWeapon.getType());
         }
 
         // Update systems
@@ -73,6 +75,11 @@ public class GameWorld {
         checkGrenadeExplosions();
         checkCollisions();
         waveManager.update(delta, enemyHandler, player.getX(), player.getY());
+
+        // TEMP: Upgrades activates with keybind
+        if(input.wasPressed(KeyCode.U) && currentWeapon instanceof Upgrade) {
+            ((Upgrade) currentWeapon).STAGE_ONE_UPGRADE_ONE();
+        }
     }
 
     private void checkGrenadeExplosions() {
