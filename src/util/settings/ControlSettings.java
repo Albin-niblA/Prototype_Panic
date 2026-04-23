@@ -1,4 +1,4 @@
-package controller;
+package util.settings;
 
 public class ControlSettings {
     private static ControlScheme scheme = ControlScheme.WASD;

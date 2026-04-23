@@ -1,4 +1,4 @@
-package controller;
+package util.settings;
 
 public enum ControlScheme {
     WASD,

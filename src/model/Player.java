@@ -20,7 +20,7 @@ public class Player extends Entity {
         this.x = startX;
         this.y = startY;
         this.maxHealth = 100;
-        this.health = 0;
+        this.health = 100;
         this.contactDamage = 0;
     }
 
