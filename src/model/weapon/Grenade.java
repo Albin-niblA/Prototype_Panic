@@ -5,7 +5,7 @@ import model.ProjectileManager;
 public class Grenade extends Weapon implements Upgrade {
     private static final String NAME = "Grenade";
     private static final int BASE_DAMAGE = 75;
-    private static final double BASE_FIRE_INTERVAL = 1;
+    private static final double BASE_FIRE_INTERVAL = 3;
     private static final double BASE_PROJECTILE_SPEED = 700;
     private static final double BASE_PROJECTILE_RADIUS = 20;
     private static final int TEXTURE_ID = 3;

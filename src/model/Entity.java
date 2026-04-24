@@ -66,4 +66,8 @@ public abstract class Entity {
     public double getDamageCooldown() {
         return damageCooldown;
     }
+
+    public double getMovementSpeed() { return movementSpeed; }
+
+    public void setMovementSpeed(double movementSpeed) { this.movementSpeed = movementSpeed; }
 }

@@ -11,7 +11,7 @@ public class Player extends Entity {
 
     private EnumMap<Upgrades, Integer> upgrades = new EnumMap<>(Upgrades.class);
 
-    private static final double BLINK_DISTANCE = 200.0;
+    private double BLINK_DISTANCE = 200.0;
     private static final double BLINK_COOLDOWN_DURATION = 3.0;
     private static final double BLINK_VISIBLE_DELAY = 0.21;
 
@@ -77,6 +77,8 @@ public class Player extends Entity {
     }
 
     public boolean tryBlink(double mapWidth, double mapHeight) {
+        int blinkLevel = getUpgradeLevel(Upgrades.Blink);
+        if (blinkLevel == 0) return false;
         if (!canBlink || blinkCooldown > 0) return false;
 
         double dx = 0, dy = 0;
@@ -100,7 +102,7 @@ public class Player extends Entity {
         x = Math.max(size / 2, Math.min(mapWidth  - size / 2, x + dx * BLINK_DISTANCE));
         y = Math.max(size / 2, Math.min(mapHeight - size / 2, y + dy * BLINK_DISTANCE));
 
-        blinkCooldown = BLINK_COOLDOWN_DURATION;
+        blinkCooldown = BLINK_COOLDOWN_DURATION * Math.pow(0.9, blinkLevel);
         blinking = true;
         blinkVisibleTimer = BLINK_VISIBLE_DELAY;
         return true;
@@ -112,6 +114,9 @@ public class Player extends Entity {
     public boolean isBlinking()             { return blinking; }
     public void setCanBlink(boolean v)      { canBlink = v; }
     public void setBlinking(boolean v)      { blinking = v; }
+    public double getBLINK_DISTANCE() { return BLINK_DISTANCE; }
+    public void setBLINK_DISTANCE(double BLINK_DISTANCE) { this.BLINK_DISTANCE = BLINK_DISTANCE; }
+
     public int getUpgradeLevel(Upgrades u) {
         return upgrades.getOrDefault(u, 0);
     }

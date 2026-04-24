@@ -55,8 +55,17 @@ public class GameWorld {
         }
         player.update(delta, WORLD_WIDTH, WORLD_HEIGHT);
 
+        // test for upgrades on f keys
         if (input.wasPressed(KeyCode.F1)) {
             player.levelUpgrade(Upgrades.Multishot);
+        }
+        if (input.wasPressed(KeyCode.F2)) {
+            player.levelUpgrade(Upgrades.Nimble);
+            player.setMovementSpeed(player.getMovementSpeed() + 10);
+        }
+        if (input.wasPressed(KeyCode.F3)) {
+            player.levelUpgrade(Upgrades.Blink);
+            player.setBLINK_DISTANCE(player.getBLINK_DISTANCE() + 20);
         }
 
         // Shooting
@@ -74,7 +83,7 @@ public class GameWorld {
                 currentWeapon.shootMultiple(projectileManager, player.getX(), player.getY(),
                         worldMouseX, worldMouseY, multiLevel + 1);
             }
-            shootCooldown = currentWeapon.getFireInterval();
+            shootCooldown = currentWeapon.getFireInterval() * (Math.pow(0.9, player.getUpgradeLevel(Upgrades.Nimble)));
             SoundManager.playShoot();
         }
 

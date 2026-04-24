@@ -114,6 +114,9 @@ public class ProjectileManager {
                                double speed, int projID, int effID, int dmg, int amountOfProjectiles) {
         if (projectileCount + amountOfProjectiles >= MAX_PROJECTILES) return;
 
+        // below contains logic for creating a spread of projectiles
+        // where the first projectile starts at the farthest left
+        // of the spread and then it fills with X amount of projectiles to the end of the spread range
         double centerAngle = Math.atan2(targetY - y, targetX - x);
         for (int i = 0; i < amountOfProjectiles; i++) {
             double angle = centerAngle - SPREAD_ANGLE / 2 + i * (SPREAD_ANGLE / (amountOfProjectiles - 1));
