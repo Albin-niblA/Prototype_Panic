@@ -2,7 +2,7 @@ package model.weapon;
 
 import model.ProjectileManager;
 
-public class Arrow extends Weapon implements Upgrade {
+public class Arrow extends Shootable implements Upgrade {
     private static final String NAME = "Arrow";
     private static final int BASE_DAMAGE = 25;
     private static final double BASE_FIRE_INTERVAL = 0.5;
@@ -12,12 +12,6 @@ public class Arrow extends Weapon implements Upgrade {
 
     public Arrow() {
         super(NAME, BASE_DAMAGE, BASE_FIRE_INTERVAL, BASE_PROJECTILE_SPEED, BASE_PROJECTILE_RADIUS, TEXTURE_ID);
-    }
-
-    @Override
-    public void shoot(ProjectileManager pm, double originX, double originY, double targetX, double targetY) {
-        pm.addProjectile(originX, originY, getProjectileRadius(), targetX, targetY, getProjectileSpeed(),
-                getTextureId(), 0, getDamage());
     }
 
     @Override

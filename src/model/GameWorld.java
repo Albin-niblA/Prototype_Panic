@@ -55,15 +55,25 @@ public class GameWorld {
         }
         player.update(delta, WORLD_WIDTH, WORLD_HEIGHT);
 
+        if (input.wasPressed(KeyCode.F1)) {
+            player.levelUpgrade(Upgrades.Multishot);
+        }
+
         // Shooting
         shootCooldown -= delta;
         if (shooting && shootCooldown <= 0) {
             double worldMouseX = input.getMouseX() + camera.getOffsetX();
             double worldMouseY = input.getMouseY() + camera.getOffsetY();
 
-            currentWeapon.shoot(projectileManager,
-                    player.getX(), player.getY(),
-                    worldMouseX, worldMouseY);
+            int multiLevel = player.getUpgradeLevel(Upgrades.Multishot);
+            if (multiLevel == 0) {
+                currentWeapon.shoot(projectileManager,
+                        player.getX(), player.getY(),
+                        worldMouseX, worldMouseY);
+            } else {
+                currentWeapon.shootMultiple(projectileManager, player.getX(), player.getY(),
+                        worldMouseX, worldMouseY, multiLevel + 1);
+            }
             shootCooldown = currentWeapon.getFireInterval();
             SoundManager.playShoot();
         }

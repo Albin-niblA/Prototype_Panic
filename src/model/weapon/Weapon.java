@@ -8,6 +8,7 @@ public abstract class Weapon {
     private double fireInterval;
     private double projectileSpeed;
     private double projectileRadius;
+    private int projectileCount = 1;
     private int textureId;
 
     protected Weapon(String name, int damage, double fireInterval,
@@ -21,6 +22,7 @@ public abstract class Weapon {
     }
 
     public abstract void shoot(ProjectileManager pm, double originX, double originY, double targetX, double targetY);
+    public abstract void shootMultiple(ProjectileManager pm, double originX, double originY, double targetX, double targetY, int count);
 
     public static Weapon fromType(WeaponType type) {
         return switch (type) {
@@ -42,4 +44,6 @@ public abstract class Weapon {
     public void setFireInterval(double fireInterval) { this.fireInterval = fireInterval; }
     public void setProjectileSpeed(double projectileSpeed) { this.projectileSpeed = projectileSpeed; }
     public void setProjectileRadius(double projectileRadius) { this.projectileRadius = projectileRadius; }
+    public int getProjectileCount() { return projectileCount; }
+    public void setProjectileCount(int projectileCount) { this.projectileCount = projectileCount; }
 }

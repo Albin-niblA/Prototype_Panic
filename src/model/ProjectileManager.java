@@ -20,6 +20,8 @@ public class ProjectileManager {
     private final double[] explosionRadius = new double[MAX_PROJECTILES];
     private final boolean[] isGrenade = new boolean[MAX_PROJECTILES];
 
+    private final double SPREAD_ANGLE = Math.toRadians(30); // spread of multiple projectiles shot at once
+
     public ProjectileManager(double worldWidth, double worldHeight) {
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
@@ -105,6 +107,20 @@ public class ProjectileManager {
         explosionRadius[projectileCount] = 0;
         isGrenade[projectileCount] = false;
         projectileCount++;
+    }
+
+    public void addProjectiles(double x, double y, double r,
+                               double targetX, double targetY,
+                               double speed, int projID, int effID, int dmg, int amountOfProjectiles) {
+        if (projectileCount + amountOfProjectiles >= MAX_PROJECTILES) return;
+
+        double centerAngle = Math.atan2(targetY - y, targetX - x);
+        for (int i = 0; i < amountOfProjectiles; i++) {
+            double angle = centerAngle - SPREAD_ANGLE / 2 + i * (SPREAD_ANGLE / (amountOfProjectiles - 1));
+            double targetXOffset = x + Math.cos(angle);
+            double targetYOffset = y + Math.sin(angle);
+            addProjectile(x, y, r, targetXOffset, targetYOffset, speed, projID, effID, dmg);
+        }
     }
 
     public void addGrenade(double x, double y, double r,

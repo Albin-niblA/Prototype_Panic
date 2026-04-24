@@ -2,7 +2,7 @@ package model.weapon;
 
 import model.ProjectileManager;
 
-public class Rocket extends Weapon implements Upgrade{
+public class Rocket extends Shootable implements Upgrade{
     private static final String NAME = "Rocket";
     private static final int BASE_DAMAGE = 50;
     private static final double BASE_FIRE_INTERVAL = 1;

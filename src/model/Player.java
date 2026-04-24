@@ -1,11 +1,15 @@
 package model;
 
+import java.util.EnumMap;
+
 public class Player extends Entity {
     private boolean moveUp;
     private boolean moveDown;
     private boolean moveLeft;
     private boolean moveRight;
     private int moveDir = 0; // 0=front, 1=back, 2=left, 3=right, 4=frontLeft, 5=frontRight, 6=backLeft, 7=backRight
+
+    private EnumMap<Upgrades, Integer> upgrades = new EnumMap<>(Upgrades.class);
 
     private static final double BLINK_DISTANCE = 200.0;
     private static final double BLINK_COOLDOWN_DURATION = 3.0;
@@ -22,6 +26,9 @@ public class Player extends Entity {
         this.maxHealth = 100;
         this.health = 100;
         this.contactDamage = 0;
+        for (Upgrades u : Upgrades.values()) {
+            upgrades.put(u, 0);
+        }
     }
 
     public void setMoving(boolean up, boolean down, boolean left, boolean right) {
@@ -105,6 +112,14 @@ public class Player extends Entity {
     public boolean isBlinking()             { return blinking; }
     public void setCanBlink(boolean v)      { canBlink = v; }
     public void setBlinking(boolean v)      { blinking = v; }
+    public int getUpgradeLevel(Upgrades u) {
+        return upgrades.getOrDefault(u, 0);
+    }
+
+    public void levelUpgrade(Upgrades u) {
+        int level = upgrades.getOrDefault(u, 0);
+        upgrades.put(u, level + 1);
+    }
 
     public void reset(double startX, double startY) {
         x = startX;
