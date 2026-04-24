@@ -36,7 +36,7 @@ public class SettingsMenu {
         subtitle.setFont(new Font(18));
 
         wasdBox = createImageBox("WASD", "/util/images/assets/WASD_Keys.png");
-        arrowBox = createImageBox("Arrow", "/util/images/assets/Arrow_Keys.png");
+        arrowBox = createImageBox("Arrow keys", "/util/images/assets/Arrow_Keys.png");
 
         wasdBox.setOnMouseClicked(e -> {
             listener.onWasdSelected();
@@ -88,7 +88,7 @@ public class SettingsMenu {
     }
 
     public void show() {
-        stage.setTitle("Prototype Panic - Inställningar");
+        stage.setTitle("Prototype Panic - Settings");
         stage.setScene(scene);
         stage.show();
     }
