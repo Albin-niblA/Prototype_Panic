@@ -28,14 +28,14 @@ public class SettingsMenu {
         this.stage = stage;
         this.listener = listener;
 
-        Text title = new Text("Inställningar");
+        Text title = new Text("Settings");
         title.setFont(new Font(40));
 
-        Text subtitle = new Text("Välj kontrollschema");
+        Text subtitle = new Text("Select control scheme");
         subtitle.setFont(new Font(18));
 
         wasdBox = createImageBox("WASD", "/util/images/assets/WASD_Keys.png");
-        arrowBox = createImageBox("Piltangenter", "/util/images/assets/Arrow_Keys.png");
+        arrowBox = createImageBox("Arrow", "/util/images/assets/Arrow_Keys.png");
 
         wasdBox.setOnMouseClicked(e -> {
             listener.onWasdSelected();
@@ -50,7 +50,7 @@ public class SettingsMenu {
         HBox controlsRow = new HBox(60, wasdBox, arrowBox);
         controlsRow.setAlignment(Pos.CENTER);
 
-        Button backButton = new Button("Tillbaka till huvudmeny");
+        Button backButton = new Button("Back to main menu");
         backButton.setPrefWidth(250);
         backButton.setPrefHeight(50);
         backButton.setOnAction(e -> onBack.run());
