@@ -50,9 +50,7 @@ public class GameRenderer {
 
         // Player
         Player p = world.getPlayer();
-        int moveDir = p.getMoveDir();
-        if (moveDir > 5) moveDir = 1;
-        Image pTex = textures.getPlayerTexture(moveDir);
+        Image pTex = textures.getPlayerTexture(p.getMoveDir());
         double ps = p.getSize();
         if (!p.isBlinking()) {
             gc.drawImage(pTex, p.getX() - ps / 2 - ox, p.getY() - ps / 2 - oy, ps, ps);

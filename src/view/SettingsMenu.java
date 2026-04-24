@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import util.settings.SettingsListener;
 
 public class SettingsMenu {
     private static final String ACTIVE_STYLE =

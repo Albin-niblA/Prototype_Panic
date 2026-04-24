@@ -3,7 +3,7 @@ package util;
 import javafx.scene.image.Image;
 
 public class TextureAtlas {
-    private final Image[] playerTextures = new Image[6];
+    private final Image[] playerTextures = new Image[8];
     private final Image[] enemyTextures = new Image[2];
     private final Image[] projectileTextures = new Image[4];
     private final Image[] fxTextures = new Image[3];
@@ -15,6 +15,8 @@ public class TextureAtlas {
         playerTextures[3] = load("/util/images/player/pRight.png");
         playerTextures[4] = load("/util/images/player/pFL.png");
         playerTextures[5] = load("/util/images/player/pFR.png");
+        playerTextures[6] = load("/util/images/player/pBL.png");
+        playerTextures[7] = load("/util/images/player/pBR.png");
 
 
         enemyTextures[0] = load("/util/images/enemies/slime.png");

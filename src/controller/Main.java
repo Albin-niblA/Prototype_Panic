@@ -4,10 +4,12 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import model.weapon.WeaponType;
+import util.settings.ControlScheme;
+import util.settings.ControlSettings;
 import view.ButtonType;
 import view.GameListener;
 import view.MainMenu;
-import view.SettingsListener;
+import util.settings.SettingsListener;
 import view.SettingsMenu;
 import view.WeaponSelectDialog;
 

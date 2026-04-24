@@ -3,6 +3,8 @@ package controller;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import util.settings.ControlScheme;
+import util.settings.ControlSettings;
 
 import java.util.HashSet;
 import java.util.Set;
