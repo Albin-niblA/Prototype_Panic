@@ -1,6 +1,6 @@
 package model.weapon;
 
-import model.ProjectileManager;
+import model.managers.ProjectileManager;
 
 public abstract class Shootable extends Weapon {
     protected Shootable(String name, int damage, double fireInterval, double projectileSpeed, double projectileRadius, int textureId) {

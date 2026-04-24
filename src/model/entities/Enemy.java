@@ -1,4 +1,4 @@
-package model;
+package model.entities;
 
 public abstract class Enemy extends Entity {
     protected int textureID;

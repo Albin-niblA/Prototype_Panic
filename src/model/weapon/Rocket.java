@@ -1,6 +1,6 @@
 package model.weapon;
 
-import model.ProjectileManager;
+import model.managers.ProjectileManager;
 
 public class Rocket extends Shootable implements Upgrade{
     private static final String NAME = "Rocket";

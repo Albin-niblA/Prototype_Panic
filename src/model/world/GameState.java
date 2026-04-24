@@ -1,4 +1,4 @@
-package model;
+package model.world;
 
 /**
  * Representerar spelets möjliga tillstånd.

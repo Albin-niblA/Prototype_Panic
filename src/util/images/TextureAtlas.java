@@ -1,4 +1,4 @@
-package util;
+package util.images;
 
 import javafx.scene.image.Image;
 
@@ -7,6 +7,7 @@ public class TextureAtlas {
     private final Image[] enemyTextures = new Image[2];
     private final Image[] projectileTextures = new Image[4];
     private final Image[] fxTextures = new Image[3];
+    private final Image[] upgradeIcons = new Image[3];
 
     public TextureAtlas() {
         playerTextures[0] = load("/util/images/player/pFront.png");
@@ -30,6 +31,10 @@ public class TextureAtlas {
         fxTextures[0] = load("/util/images/fx/explosion.png");
         fxTextures[1] = load("/util/images/fx/blinkStart.png");
         fxTextures[2] = load("/util/images/fx/blinkEnd.png");
+
+        upgradeIcons[0] = load("/util/images/upgradeIcons/multishotIcon.png");
+        upgradeIcons[1] = load("/util/images/upgradeIcons/nimbleIcon.png");
+        upgradeIcons[2] = load("/util/images/upgradeIcons/blinkIcon.png");
     }
 
     private Image load(String path) {
@@ -66,4 +71,5 @@ public class TextureAtlas {
     public Image getEffectTexture(int fxID) {
         return fxTextures[fxID];
     }
+    public Image getUpgradeIcon(int iconID) { return upgradeIcons[iconID]; }
 }

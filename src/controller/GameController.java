@@ -7,11 +7,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import model.Camera;
-import model.GameState;
-import model.GameWorld;
+import model.world.Camera;
+import model.world.GameState;
+import model.world.GameWorld;
 import model.weapon.WeaponType;
-import model.SoundManager;
+import model.managers.SoundManager;
 import view.GameRenderer;
 
 public class GameController {
@@ -39,7 +39,7 @@ public class GameController {
         this.camera = new Camera(width, height);
         this.world = new GameWorld(weaponType);
         this.input = new InputHandler();
-        this.renderer = new GameRenderer(width, height, camera);
+        this.renderer = new GameRenderer(width, height, camera, world.getUpgradeManager());
 
         Canvas canvas = new Canvas(width, height);
         this.gc = canvas.getGraphicsContext2D();
@@ -91,6 +91,10 @@ public class GameController {
 
         if (input.wasPressed(KeyCode.R) && world.getState() == GameState.GAME_OVER) {
             world.reset();
+        }
+
+        if (input.wasPressed(KeyCode.F4)) {
+            world.upgrade();
         }
 
         if (input.wasMouseClicked()) {

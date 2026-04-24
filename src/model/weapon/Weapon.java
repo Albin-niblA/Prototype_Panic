@@ -1,6 +1,6 @@
 package model.weapon;
 
-import model.ProjectileManager;
+import model.managers.ProjectileManager;
 
 public abstract class Weapon {
     private String name;

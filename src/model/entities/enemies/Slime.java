@@ -1,6 +1,6 @@
-package model.enemies;
+package model.entities.enemies;
 
-import model.Enemy;
+import model.entities.Enemy;
 
 public class Slime extends Enemy {
 

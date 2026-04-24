@@ -1,4 +1,6 @@
-package model;
+package model.world;
+
+import model.entities.Player;
 
 public class Camera {
     private double offsetX;

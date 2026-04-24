@@ -1,4 +1,4 @@
-package model;
+package model.managers;
 
 public class EffectManager {
     private static final int MAX_EFFECTS = 1000;

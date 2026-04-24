@@ -1,4 +1,6 @@
-package model;
+package model.entities;
+
+import model.upgrades.Upgrades;
 
 import java.util.EnumMap;
 

@@ -3,8 +3,15 @@ package view;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import model.*;
-import util.TextureAtlas;
+import model.entities.Enemy;
+import model.entities.Player;
+import model.managers.EffectManager;
+import model.managers.ProjectileManager;
+import model.upgrades.UpgradeManager;
+import model.world.Camera;
+import model.world.GameWorld;
+import util.images.TextureAtlas;
+
 
 public class GameRenderer {
     private final int viewportWidth;
@@ -12,17 +19,17 @@ public class GameRenderer {
     private final Camera camera;
     private final TextureAtlas textures;
     private final HUD hud;
-    private final PauseOverlay pauseOverlay;
+    private final OverlayHandler overlay;
 
     private static final int GRID_SIZE = 60;
 
-    public GameRenderer(int viewportWidth, int viewportHeight, Camera camera) {
+    public GameRenderer(int viewportWidth, int viewportHeight, Camera camera, UpgradeManager upgradeManager) {
         this.viewportWidth = viewportWidth;
         this.viewportHeight = viewportHeight;
         this.camera = camera;
         this.textures = new TextureAtlas();
         this.hud = new HUD(viewportWidth, viewportHeight);
-        this.pauseOverlay = new PauseOverlay(viewportWidth, viewportHeight);
+        this.overlay = new OverlayHandler(viewportWidth, viewportHeight, upgradeManager, textures);
     }
 
     public void render(GraphicsContext gc, GameWorld world) {
@@ -71,8 +78,9 @@ public class GameRenderer {
         hud.draw(gc, world);
 
         // Overlay (pause/game over)
-        pauseOverlay.draw(gc, world.getState());
+        overlay.draw(gc, world.getState());
     }
+
 
     private void renderProjectiles(GraphicsContext gc, ProjectileManager pm,
                                     double ox, double oy) {

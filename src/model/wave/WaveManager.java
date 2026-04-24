@@ -1,10 +1,10 @@
 package model.wave;
 
-import model.EnemyHandler;
-import model.Enemy;
-import model.GameWorld;
-import model.enemies.Slime;
-import model.enemies.DemonSlime;
+import model.managers.EnemyHandler;
+import model.entities.Enemy;
+import model.world.GameWorld;
+import model.entities.enemies.Slime;
+import model.entities.enemies.DemonSlime;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package model;
+package model.managers;
 
 public class ProjectileManager {
     private static final int MAX_PROJECTILES = 1000;
@@ -18,7 +18,6 @@ public class ProjectileManager {
     private final double[] fuseTimer = new double[MAX_PROJECTILES];
     private final double[] deceleration = new double[MAX_PROJECTILES];
     private final double[] explosionRadius = new double[MAX_PROJECTILES];
-    private final boolean[] isGrenade = new boolean[MAX_PROJECTILES];
 
     private final double SPREAD_ANGLE = Math.toRadians(30); // spread of multiple projectiles shot at once
 
@@ -29,7 +28,7 @@ public class ProjectileManager {
 
     public void update(double deltaTime) {
         for (int i = 0; i < projectileCount; i++) {
-            if (isGrenade[i]) {
+            if (isGrenade(i)) {
                 // Decelerate the grenade
                 double speed = Math.sqrt(velX[i] * velX[i] + velY[i] * velY[i]);
                 if (speed > 0) {
@@ -74,7 +73,6 @@ public class ProjectileManager {
         fuseTimer[index] = fuseTimer[last];
         deceleration[index] = deceleration[last];
         explosionRadius[index] = explosionRadius[last];
-        isGrenade[index] = isGrenade[last];
         projectileCount--;
     }
 
@@ -105,7 +103,6 @@ public class ProjectileManager {
         fuseTimer[projectileCount] = 0;
         deceleration[projectileCount] = 0;
         explosionRadius[projectileCount] = 0;
-        isGrenade[projectileCount] = false;
         projectileCount++;
     }
 
@@ -157,7 +154,6 @@ public class ProjectileManager {
         this.fuseTimer[projectileCount] = fuseTime;
         this.deceleration[projectileCount] = adjustedSpeed / fuseTime;
         this.explosionRadius[projectileCount] = explRadius;
-        this.isGrenade[projectileCount] = true;
         projectileCount++;
     }
 
@@ -173,7 +169,7 @@ public class ProjectileManager {
     public double getVelY(int i) { return velY[i]; }
     public int getTextureID(int i) { return projectileID[i]; }
     public int getDamage(int i) { return damage[i]; }
-    public boolean isGrenade(int i) { return isGrenade[i]; }
+    public boolean isGrenade(int i) { return projectileID[i] == 3; }
     public double getFuseTimer(int i) { return fuseTimer[i]; }
     public double getExplosionRadius(int i) { return explosionRadius[i]; }
 }

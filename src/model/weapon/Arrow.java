@@ -1,7 +1,5 @@
 package model.weapon;
 
-import model.ProjectileManager;
-
 public class Arrow extends Shootable implements Upgrade {
     private static final String NAME = "Arrow";
     private static final int BASE_DAMAGE = 25;

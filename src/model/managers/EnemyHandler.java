@@ -1,4 +1,6 @@
-package model;
+package model.managers;
+
+import model.entities.Enemy;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -3,8 +3,8 @@ package view;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import model.GameWorld;
-import model.Player;
+import model.world.GameWorld;
+import model.entities.Player;
 
 public class HUD {
     private final int screenWidth;

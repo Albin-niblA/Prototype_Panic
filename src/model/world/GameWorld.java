@@ -1,13 +1,19 @@
-package model;
+package model.world;
 
 import controller.InputHandler;
 import javafx.scene.input.KeyCode;
+import model.upgrades.UpgradeManager;
+import model.upgrades.Upgrades;
+import model.entities.Enemy;
+import model.entities.Player;
+import model.managers.EffectManager;
+import model.managers.EnemyHandler;
+import model.managers.ProjectileManager;
+import model.managers.SoundManager;
 import model.wave.WaveManager;
-import model.weapon.Grenade;
 import model.weapon.Upgrade;
 import model.weapon.Weapon;
 import model.weapon.WeaponType;
-import model.SoundManager;
 
 public class GameWorld {
     public static final int WORLD_WIDTH = 3200;
@@ -19,6 +25,7 @@ public class GameWorld {
     private final EffectManager effectManager;
     private final WaveManager waveManager;
     private final Weapon currentWeapon;
+    private final UpgradeManager upgradeManager;
 
     private GameState state = GameState.RUNNING;
     private double shootCooldown = 0;
@@ -30,6 +37,7 @@ public class GameWorld {
         projectileManager = new ProjectileManager(WORLD_WIDTH, WORLD_HEIGHT);
         effectManager = new EffectManager();
         waveManager = new WaveManager();
+        upgradeManager = new UpgradeManager();
         currentWeapon = Weapon.fromType(weaponType);
     }
 
@@ -174,6 +182,12 @@ public class GameWorld {
         state = GameState.RUNNING;
     }
 
+    public void upgrade() {
+        state = GameState.UPGRADE;
+        shooting = false;
+        player.setMoving(false, false, false, false);
+    }
+
     public GameState getState() { return state; }
     public Player getPlayer() { return player; }
     public EnemyHandler getEnemyHandler() { return enemyHandler; }
@@ -181,4 +195,7 @@ public class GameWorld {
     public WaveManager getWaveManager() { return waveManager; }
     public Weapon getCurrentWeapon() { return currentWeapon; }
     public EffectManager getEffectManager() { return effectManager; }
+    public UpgradeManager getUpgradeManager() {
+        return upgradeManager;
+    }
 }
