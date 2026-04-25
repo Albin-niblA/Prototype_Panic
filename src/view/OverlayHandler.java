@@ -2,6 +2,7 @@ package view;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.*;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
@@ -30,10 +31,14 @@ public class OverlayHandler {
     private TextureAtlas textures;
     private boolean drawnUpgrade = false;
     CardBounds cardBounds;
+    List<Rectangle2D> cards = new ArrayList<>();
 
     private final int width;
     private final int height;
     private double resolutionScale;
+
+    private double mouseX = 0;
+    private double mouseY = 0;
 
     public OverlayHandler(int width, int height, double resolutionScale, UpgradeManager upgradeManager, TextureAtlas textures) {
         this.width = width;
@@ -98,10 +103,16 @@ public class OverlayHandler {
         int startX = (width - totalWidth) / 2;
         int cardY = height / 3;
         cardBounds = new CardBounds(cardWidth, cardHeight, spacing, totalWidth, startX, cardY);
+        if (cards.isEmpty()) {
+            for (int i = 0; i < 3; i++) {
+                int x = cardBounds.startX + i * (cardBounds.cardWidth + cardBounds.spacing);
+                cards.add(new Rectangle2D(x, cardBounds.cardY, cardBounds.cardWidth, cardBounds.cardHeight));
+            }
+        }
 
         for (int i = 0; i < upgrades.size(); i++) {
             int x = startX + i * (cardWidth + spacing);
-            drawCard(gc, upgrades.get(i), x, cardY, cardWidth, cardHeight);
+            drawCard(gc, upgrades.get(i), x, cardY, cardWidth, cardHeight, i);
         }
         drawnUpgrade = true;
     }
@@ -124,7 +135,9 @@ public class OverlayHandler {
         }
     }
 
-    private void drawCard(GraphicsContext gc, Upgrades upgrade, int x, int y, int width, int height) {
+    private void drawCard(GraphicsContext gc, Upgrades upgrade, int x, int y, int width, int height, int index) {
+        boolean hovered = cards.get(index).contains(mouseX, mouseY);
+
         // Creates a background with a gradient from the card's rarity colors
         LinearGradient background = new LinearGradient(0, y, 0, y + height, false,
                 CycleMethod.NO_CYCLE, new Stop(0,
@@ -135,6 +148,19 @@ public class OverlayHandler {
         // Rounded rectangles and stroke
         double strokeSize = 32*resolutionScale;
         gc.fillRoundRect(x, y, width, height, strokeSize, strokeSize);
+        Light.Point light = new Light.Point(); // A light that centers around a point
+        light.setX(mouseX - x);
+        light.setY(mouseY - y);
+        light.setZ(500); // Height of the light
+        light.setColor(Color.web(upgrade.getRarity().getGradientStart()));
+
+        Lighting lighting = new Lighting(light);
+        lighting.setSurfaceScale(5.0); // How much depth
+
+        gc.setEffect(lighting);
+        gc.fillRoundRect(x, y, width, height, strokeSize, strokeSize);
+        gc.setEffect(null);
+
         gc.setStroke(Color.BLACK);
         gc.setLineWidth(5);
         gc.strokeRoundRect(x, y, width, height, strokeSize, strokeSize);
@@ -174,12 +200,7 @@ public class OverlayHandler {
 
 
     // Returns the card if the mouse has been clicked on one
-    public Upgrades getClickedCard(double mouseX, double mouseY) {
-        List<Rectangle2D> cards = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            int x = cardBounds.startX + i * (cardBounds.cardWidth + cardBounds.spacing);
-            cards.add(new Rectangle2D(x, cardBounds.cardY, cardBounds.cardWidth, cardBounds.cardHeight));
-        }
+    public Upgrades getClickedCard() {
         for (int i = 0; i < 3; i++) {
             if (cards.get(i).contains(mouseX, mouseY)) {
                 drawnUpgrade = false;
@@ -187,5 +208,10 @@ public class OverlayHandler {
             }
         }
         return null;
+    }
+
+    public void setMouseCoords(double mouseX, double mouseY) {
+        this.mouseX = mouseX;
+        this.mouseY = mouseY;
     }
 }

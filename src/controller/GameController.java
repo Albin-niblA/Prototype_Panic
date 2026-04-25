@@ -103,10 +103,14 @@ public class GameController {
 
         if (input.wasMouseClicked()) {
             world.toggleShooting();
-            if (world.getState() == GameState.UPGRADE) {
-                world.applyCardUpgrade(renderer.getOverlay().getClickedCard(input.getMouseX(), input.getMouseY()));
-                world.resume();
+        }
+
+        if (world.getState() == GameState.UPGRADE) {
+            renderer.getOverlay().setMouseCoords(input.getMouseX(), input.getMouseY());
+            if (input.wasMouseClicked()) {
+                world.applyCardUpgrade(renderer.getOverlay().getClickedCard());
             }
+            world.resume();
         }
     }
 
