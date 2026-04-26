@@ -1,5 +1,7 @@
 package model.entities;
 
+import model.managers.EnemyProjectileManager;
+
 public abstract class Enemy extends Entity {
     protected int textureID;
 
@@ -12,6 +14,11 @@ public abstract class Enemy extends Entity {
             x += (dx / dist) * movementSpeed * deltaTime;
             y += (dy / dist) * movementSpeed * deltaTime;
         }
+    }
+
+    public void update(double deltaTime, double playerX, double playerY,
+                        EnemyProjectileManager projectileManager) {
+        update(deltaTime, playerX, playerY);
     }
 
     public void takeProjectileDamage(int amount) {

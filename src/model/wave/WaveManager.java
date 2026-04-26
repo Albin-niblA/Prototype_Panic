@@ -5,6 +5,7 @@ import model.entities.Enemy;
 import model.world.GameWorld;
 import model.entities.enemies.Slime;
 import model.entities.enemies.DemonSlime;
+import model.entities.enemies.Bandit;
 
 import java.util.Random;
 
@@ -62,6 +63,8 @@ public class WaveManager {
         Enemy e;
         if (currentWave <= 2 || rand.nextDouble() < 0.6) {
             e = new Slime(x, y);
+        } else if (rand.nextDouble() < 0.35) {
+            e = new Bandit(x, y);
         } else {
             e = new DemonSlime(x, y);
         }

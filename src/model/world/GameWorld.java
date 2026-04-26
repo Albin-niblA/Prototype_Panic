@@ -9,6 +9,7 @@ import model.entities.Enemy;
 import model.entities.Player;
 import model.managers.EffectManager;
 import model.managers.EnemyHandler;
+import model.managers.EnemyProjectileManager;
 import model.managers.ProjectileManager;
 import model.managers.SoundManager;
 import model.wave.WaveManager;
@@ -25,6 +26,7 @@ public class GameWorld {
     private final Player player;
     private final EnemyHandler enemyHandler;
     private final ProjectileManager projectileManager;
+    private final EnemyProjectileManager enemyProjectileManager;
     private final EffectManager effectManager;
     private final WaveManager waveManager;
     private final Weapon currentWeapon;
@@ -38,6 +40,7 @@ public class GameWorld {
         player = new Player(WORLD_WIDTH / 2.0, WORLD_HEIGHT / 2.0);
         enemyHandler = new EnemyHandler();
         projectileManager = new ProjectileManager(WORLD_WIDTH, WORLD_HEIGHT);
+        enemyProjectileManager = new EnemyProjectileManager(WORLD_WIDTH, WORLD_HEIGHT);
         effectManager = new EffectManager();
         waveManager = new WaveManager();
         upgradeManager = new UpgradeManager();
@@ -87,10 +90,12 @@ public class GameWorld {
 
         // Update systems
         projectileManager.update(delta);
+        enemyProjectileManager.update(delta);
         effectManager.update(now);
-        enemyHandler.update(delta, player.getX(), player.getY());
+        enemyHandler.update(delta, player.getX(), player.getY(), enemyProjectileManager);
         checkGrenadeExplosions();
         checkCollisions();
+        checkEnemyProjectileCollisions();
         waveManager.update(delta, enemyHandler, player.getX(), player.getY());
 
         // TEMP: Upgrades activates with keybind
@@ -107,6 +112,21 @@ public class GameWorld {
                 int dmg = projectileManager.getDamage(i);
                 enemyHandler.applyAoeDamage(px, py, projectileManager.getExplosionRadius(i), dmg);
                 projectileManager.deleteProjectile(i--);
+            }
+        }
+    }
+
+    private void checkEnemyProjectileCollisions() {
+        if (player.getDamageCooldown() > 0) return;
+
+        int dmg = enemyProjectileManager.checkPlayerHit(
+                player.getX(), player.getY(), player.getSize() / 2
+        );
+        if (dmg > 0) {
+            player.takeDamage(dmg);
+            if (player.isDead()) {
+                state = GameState.GAME_OVER;
+                shooting = false;
             }
         }
     }
@@ -165,6 +185,7 @@ public class GameWorld {
     public void reset() {
         player.reset(WORLD_WIDTH / 2.0, WORLD_HEIGHT / 2.0);
         projectileManager.clear();
+        enemyProjectileManager.clear();
         enemyHandler.clear();
         waveManager.reset();
         shootCooldown = 0;
@@ -189,6 +210,7 @@ public class GameWorld {
     public Player getPlayer() { return player; }
     public EnemyHandler getEnemyHandler() { return enemyHandler; }
     public ProjectileManager getProjectileManager() { return projectileManager; }
+    public EnemyProjectileManager getEnemyProjectileManager() { return enemyProjectileManager; }
     public WaveManager getWaveManager() { return waveManager; }
     public Weapon getCurrentWeapon() { return currentWeapon; }
     public EffectManager getEffectManager() { return effectManager; }

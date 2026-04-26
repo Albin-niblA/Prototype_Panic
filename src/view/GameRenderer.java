@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import model.entities.Enemy;
 import model.entities.Player;
 import model.managers.EffectManager;
+import model.managers.EnemyProjectileManager;
 import model.managers.ProjectileManager;
 import model.upgrades.UpgradeManager;
 import model.world.Camera;
@@ -57,6 +58,7 @@ public class GameRenderer {
 
         // Projectiles
         renderProjectiles(gc, world.getProjectileManager(), ox, oy);
+        renderEnemyProjectiles(gc, world.getEnemyProjectileManager(), ox, oy);
 
         // Player
         Player p = world.getPlayer();
@@ -124,6 +126,28 @@ public class GameRenderer {
                 gc.drawImage(tex, -r, -r, r * 2, r * 2);
                 gc.restore();
             }
+        }
+    }
+
+    private void renderEnemyProjectiles(GraphicsContext gc, EnemyProjectileManager epm,
+                                           double ox, double oy) {
+        for (int i = 0; i < epm.getCount(); i++) {
+            double px = epm.getX(i) - ox;
+            double py = epm.getY(i) - oy;
+
+            if (px < -200 || px > viewportWidth + 200 ||
+                py < -200 || py > viewportHeight + 200) continue;
+
+            double r = epm.getRadius(i);
+            int texID = epm.getTextureID(i);
+            Image tex = textures.getProjectileTexture(texID);
+
+            double angle = Math.toDegrees(Math.atan2(epm.getVelY(i), epm.getVelX(i)));
+            gc.save();
+            gc.translate(px, py);
+            gc.rotate(angle);
+            gc.drawImage(tex, -r, -r, r * 2, r * 2);
+            gc.restore();
         }
     }
 
