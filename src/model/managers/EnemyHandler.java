@@ -9,11 +9,12 @@ import java.util.List;
 public class EnemyHandler {
     private final List<Enemy> enemies = new ArrayList<>();
 
-    public void update(double deltaTime, double playerX, double playerY) {
+    public void update(double deltaTime, double playerX, double playerY,
+                        EnemyProjectileManager enemyProjectileManager) {
         Iterator<Enemy> it = enemies.iterator();
         while (it.hasNext()) {
             Enemy e = it.next();
-            e.update(deltaTime, playerX, playerY);
+            e.update(deltaTime, playerX, playerY, enemyProjectileManager);
             if (e.isDead()) it.remove();
         }
     }
