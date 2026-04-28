@@ -92,6 +92,7 @@ public class SettingsMenu {
     public void show() {
         stage.setTitle("Prototype Panic - Settings");
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
     }
 }

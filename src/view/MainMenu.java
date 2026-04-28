@@ -36,6 +36,7 @@ public class MainMenu {
     public void show() {
         stage.setTitle("Prototype Panic");
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
     }
 }

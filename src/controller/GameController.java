@@ -57,6 +57,7 @@ public class GameController {
         input.attachTo(scene);
 
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.setTitle("Prototype Panic");
         stage.setResizable(false);
 
