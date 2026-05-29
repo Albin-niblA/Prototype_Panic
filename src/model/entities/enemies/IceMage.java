@@ -17,7 +17,7 @@ public class IceMage extends Enemy {
     private static final int SPECIAL_ATTACK_INTERVAL = 5;
     private static final double SPECIAL_PROJECTILE_SPEED = 500;
     private static final int SPECIAL_PROJECTILE_DAMAGE = 20;
-    private static final int PROJECTILE_TEXTURE_ID_SPECIAL = 2; // rocket atm (gör egen projektil)
+    private static final int PROJECTILE_TEXTURE_ID_SPECIAL = 4; // ice-projectile
     private static final int FREEZE_EFFECT_ID = 1;
     private int shotCounter = 0;
 

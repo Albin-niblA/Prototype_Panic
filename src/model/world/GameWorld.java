@@ -12,6 +12,8 @@ import model.managers.EnemyHandler;
 import model.managers.ProjectileManager;
 import model.managers.SoundManager;
 import model.managers.WaveManager;
+import model.weapon.Arrow;
+import model.weapon.Rocket;
 import model.weapon.Weapon;
 import model.weapon.WeaponType;
 import model.managers.CoinManager;
@@ -86,7 +88,13 @@ public class GameWorld {
                         worldMouseX, worldMouseY, shotAmount, bounce);
             }
             shootCooldown = currentWeapon.getFireInterval() * player.getFirerateMultiplier();
-            SoundManager.playShoot();
+            if (currentWeapon instanceof Arrow) {
+                SoundManager.playArrowShoot();
+            } else if (currentWeapon instanceof Rocket) {
+                SoundManager.playRocketSound();
+            } else {
+                SoundManager.playShoot();
+            }
         }
 
         // Update systems

@@ -7,6 +7,8 @@ import javafx.util.Duration;
 
 public class SoundManager {
     private static AudioClip shootSound;
+    private static AudioClip arrowSound;
+    private static AudioClip rocketSound;
     private static AudioClip hitSound;
     private static AudioClip deathSound;
     private static AudioClip teleportSound;
@@ -17,7 +19,10 @@ public class SoundManager {
 
     public static void init() {
         if (initialized) return;
+        //weapon sounds
         shootSound = loadClip("/util/sounds/shoot.wav");
+        arrowSound = loadClip("/util/sounds/arrow.wav");
+        rocketSound = loadClip("/util/sounds/rocket.wav");
         // Ready for when sound files are added:
         hitSound = loadClip("/util/sounds/taking_damage.wav");
         // deathSound = loadClip("/util/sounds/death.wav");
@@ -43,6 +48,8 @@ public class SoundManager {
     }
 
     public static void playShoot() { if (shootSound != null) shootSound.play(volume);}
+    public static void playRocketSound() { if (rocketSound != null) rocketSound.play(volume);}
+    public static void playArrowShoot() { if (arrowSound != null) arrowSound.play(volume);}
     public static void playHit() { if (hitSound != null) hitSound.play(volume); }
     public static void playTeleport() { if (teleportSound != null) teleportSound.play(volume); }
     public static void playDeath() { if (deathSound != null) deathSound.play(); }
