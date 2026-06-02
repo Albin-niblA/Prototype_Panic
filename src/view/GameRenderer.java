@@ -38,7 +38,7 @@ public class GameRenderer {
         this.overlay = new OverlayHandler(viewportWidth, viewportHeight, resolutionScale, upgradeManager, textures);
     }
 
-    public void render(GraphicsContext gc, GameWorld world) {
+    public void render(GraphicsContext gc, GameWorld world, double delta) {
         double ox = camera.getOffsetX();
         double oy = camera.getOffsetY();
 
@@ -47,7 +47,7 @@ public class GameRenderer {
         renderPlayer(gc, world.getPlayer(), ox, oy);
         renderEnemies(gc, world, ox, oy);
         renderEffects(gc, world.getEffectManager(), ox, oy);
-        hud.draw(gc, world, world.getUpgradeManager().getBLINK_COOLDOWN_DURATION(), world.getUpgradeManager().getBlinkCooldown());
+        hud.draw(gc, world, world.getUpgradeManager().getBLINK_COOLDOWN_DURATION(), world.getUpgradeManager().getBlinkCooldown(), delta);
         overlay.draw(gc, world.getState());
     }
 
@@ -197,6 +197,10 @@ public class GameRenderer {
     private boolean isOffscreen(double px, double py) {
         return px < -200 || px > viewportWidth + 200
                 || py < -200 || py > viewportHeight + 200;
+    }
+
+    public HUD getHud() {
+        return hud;
     }
 
     public OverlayHandler getOverlay() {

@@ -4,6 +4,7 @@ public enum ButtonType {
     START("Start Game"),
     SETTINGS("Settings"),
     SCOREBOARD("Scoreboard"),
+    CREDITS("Credits"),
     EXIT("Exit");
 
     private final String label;

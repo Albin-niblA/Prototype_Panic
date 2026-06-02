@@ -4,30 +4,63 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import model.entities.Player;
 import model.world.GameWorld;
 import util.images.TextureAtlas;
+import util.settings.ControlScheme;
+import util.settings.ControlSettings;
+
+import java.io.InputStream;
 
 public class HUD {
+
+    private static final double TOOLTIP_DURATION = 12.0;
+    private static final double TOOLTIP_FADE_START = 3.0;
 
     private final int screenWidth;
     private final int screenHeight;
     private final double resolutionScale;
     private final Image coinAsset;
 
+    private double tooltipTimer = TOOLTIP_DURATION;
+    private Font tooltipFont;
+    private Font tooltipFontSmall;
+
     public HUD(int screenWidth, int screenHeight, double resolutionScale, TextureAtlas textures) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.resolutionScale = resolutionScale;
         coinAsset = textures.getAsset(0);
+        loadTooltipFonts();
     }
 
-    public void draw(GraphicsContext gc, GameWorld world, double blinkMax, double blinkCurrent) {
+    private void loadTooltipFonts() {
+        InputStream fontStream = getClass().getResourceAsStream("/util/fonts/PressStart2P.ttf");
+        if (fontStream != null) {
+            Font font = Font.loadFont(fontStream, 14 * resolutionScale);
+            if (font != null) {
+                tooltipFont = font;
+                fontStream = getClass().getResourceAsStream("/util/fonts/PressStart2P.ttf");
+                tooltipFontSmall = Font.loadFont(fontStream, 10 * resolutionScale);
+                return;
+            }
+        }
+        tooltipFont = Font.font("Monospaced", 14 * resolutionScale);
+        tooltipFontSmall = Font.font("Monospaced", 10 * resolutionScale);
+    }
+
+    public void showTooltip() {
+        tooltipTimer = TOOLTIP_DURATION;
+    }
+
+    public void draw(GraphicsContext gc, GameWorld world, double blinkMax, double blinkCurrent, double delta) {
         drawBlinkBar(gc, blinkMax, blinkCurrent);
         drawHealthBar(gc, world.getPlayer());
         drawWaveInfo(gc, world);
         drawXpBar(gc, world.getPlayer());
         drawCoins(gc, world);
+        drawTooltip(gc, delta);
     }
 
     private void drawBlinkBar(GraphicsContext gc, double blinkMax, double blinkCurrent) {
@@ -140,5 +173,53 @@ public class HUD {
         gc.fillText("LVL " + p.getLevel() + "  XP: " + p.getXp() + " / " + p.getXpRequired(),
                 barX + 10, barY + barHeight * 0.75);
 
+    }
+
+    private void drawTooltip(GraphicsContext gc, double delta) {
+        if (tooltipTimer <= 0) return;
+
+        tooltipTimer -= delta;
+        if (tooltipTimer < 0) tooltipTimer = 0;
+
+        double alpha;
+        if (tooltipTimer > TOOLTIP_FADE_START) {
+            alpha = 0.7;
+        } else {
+            alpha = 0.7 * (tooltipTimer / TOOLTIP_FADE_START);
+        }
+
+        if (alpha <= 0) return;
+
+        boolean wasd = ControlSettings.getScheme() == ControlScheme.WASD;
+        String moveLine = wasd ? "MOVE: W A S D" : "MOVE: ARROW KEYS";
+        String shootLine = "SHOOT: MOUSE 1 (toggle)";
+
+        double padding = 16 * resolutionScale;
+        double lineHeight = 22 * resolutionScale;
+        double boxWidth = 320 * resolutionScale;
+        double boxHeight = padding * 2 + lineHeight * 2 + 8 * resolutionScale;
+        double boxX = (screenWidth - boxWidth) / 2.0;
+        double boxY = screenHeight * 0.3 - boxHeight / 2.0;
+
+        gc.save();
+        gc.setGlobalAlpha(alpha);
+
+        gc.setFill(Color.color(0, 0, 0, 0.6));
+        gc.fillRoundRect(boxX, boxY, boxWidth, boxHeight, 12 * resolutionScale, 12 * resolutionScale);
+
+        gc.setStroke(Color.web("#66FF44"));
+        gc.setLineWidth(1.5 * resolutionScale);
+        gc.strokeRoundRect(boxX, boxY, boxWidth, boxHeight, 12 * resolutionScale, 12 * resolutionScale);
+
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setFont(tooltipFont);
+        gc.setFill(Color.web("#66FF44"));
+        gc.fillText(moveLine, screenWidth / 2.0, boxY + padding + 14 * resolutionScale);
+
+        gc.setFont(tooltipFontSmall);
+        gc.setFill(Color.web("#CCCCCC"));
+        gc.fillText(shootLine, screenWidth / 2.0, boxY + padding + 14 * resolutionScale + lineHeight + 8 * resolutionScale);
+
+        gc.restore();
     }
 }
