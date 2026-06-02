@@ -10,14 +10,14 @@ public class IceMage extends Enemy {
     private static final double PROJECTILE_SPEED = 750;
     private static final double PROJECTILE_RADIUS = 20; // Var 8 innan
     private static final int PROJECTILE_DAMAGE = 20;
-    private static final int PROJECTILE_TEXTURE_ID_BASIC = 1; // arrow.png atm (gör egen projektil)
+    private static final int PROJECTILE_TEXTURE_ID_BASIC = 5; // arrow.png atm (gör egen projektil)
     private double shootTimer = 0;
 
     // Shooting: special attack (every 5th shot)
     private static final int SPECIAL_ATTACK_INTERVAL = 5;
     private static final double SPECIAL_PROJECTILE_SPEED = 500;
     private static final int SPECIAL_PROJECTILE_DAMAGE = 20;
-    private static final int PROJECTILE_TEXTURE_ID_SPECIAL = 4; // ice-projectile
+    private static final int PROJECTILE_TEXTURE_ID_SPECIAL = 6; // ice-projectile
     private static final int FREEZE_EFFECT_ID = 1;
     private int shotCounter = 0;
 

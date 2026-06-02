@@ -12,8 +12,8 @@ public class TextureAtlas {
     private final Image[] playerRedTextures = new Image[8];
     private final Image[] playerBlueTextures = new Image[8];
     private final Image[] enemyTextures = new Image[6];
-    private final Image[] projectileTextures = new Image[5];
-    private final Image[] fxTextures = new Image[3];
+    private final Image[] projectileTextures = new Image[7];
+    private final Image[] fxTextures = new Image[6];
     private final Image[] upgradeIcons = new Image[12];
     private Image[] mapSheet = new Image[6];
     private Image[] assetTextures = new Image[1];
@@ -45,10 +45,15 @@ public class TextureAtlas {
         projectileTextures[2] = load("/util/images/projectiles/rocket.png");
         projectileTextures[3] = load("/util/images/projectiles/grenade.png");
         projectileTextures[4] = load("/util/images/projectiles/snowflake.png");
+        projectileTextures[5] = load("/util/images/projectiles/iceAttack.png");
+        projectileTextures[6] = load("/util/images/projectiles/iceStun.png");
 
         fxTextures[0] = load("/util/images/fx/explosion.png");
         fxTextures[1] = load("/util/images/fx/blinkStart.png");
         fxTextures[2] = load("/util/images/fx/blinkEnd.png");
+        fxTextures[3] = load("/util/images/fx/poison.png");
+        fxTextures[4] = load("/util/images/fx/electric.png");
+        fxTextures[5] = load("/util/images/fx/freeze.png");
 
         upgradeIcons[0]  = load("/util/images/upgradeIcons/nimbleIcon.png");
         upgradeIcons[1]  = load("/util/images/upgradeIcons/healthyIcon.png");

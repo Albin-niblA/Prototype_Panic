@@ -13,7 +13,7 @@ public class EffectManager {
 
     public void update(long now) {
         for (int i = 0; i < count; i++) {
-            if (now - lastUpdate[i] > 30_000_000) {
+            if (now - lastUpdate[i] > 30_000_000 * getSpeedMultiplier(i)) {
                 frame[i]++;
                 lastUpdate[i] = now;
 
@@ -23,6 +23,14 @@ public class EffectManager {
                 }
             }
         }
+    }
+
+    private double getSpeedMultiplier(int i) {
+        return switch (fxID[i]) {
+            case 3 -> 0.5;
+            case 5 -> 3;
+            default -> 1;
+        };
     }
 
     public void addEffect(double x, double y, int effID, long now) {
@@ -52,7 +60,9 @@ public class EffectManager {
     private int getMaxFrames(int fxID) {
         return switch (fxID) {
             case 0 -> 12;
-            case 1, 2 -> 7;
+            case 1, 2, 5 -> 7;
+            case 3 -> 9;
+            case 4 -> 8;
             default -> 0;
         };
     }
@@ -67,6 +77,9 @@ public class EffectManager {
         return switch (fxID) {
             case 0 -> 32;
             case 1, 2 -> 96;
+            case 3 -> 32;
+            case 4 -> 48;
+            case 5 -> 64;
             default -> 1;
         };
     }

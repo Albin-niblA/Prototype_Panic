@@ -39,8 +39,8 @@ public class GameWorld {
 
     public GameWorld(WeaponType weaponType) {
         player = new Player(WORLD_WIDTH / 2.0, WORLD_HEIGHT / 2.0);
-        enemyHandler = new EnemyHandler();
         effectManager = new EffectManager();
+        enemyHandler = new EnemyHandler(effectManager);
         waveManager = new WaveManager();
         upgradeManager = player.getUpgradeManager();
         coinManager = new CoinManager();
@@ -155,6 +155,12 @@ public class GameWorld {
                 if (e != null) {
                     projectileManager.deleteProjectile(i--);
                     effectManager.addEffect(px, py, 0, System.nanoTime());
+                    if (upgradeManager.getSlowMultiplier() != 1) {
+                        if (!e.isHasLoadedPoisonEffect()) {
+                            effectManager.addEffect(e.getX(), e.getY(), 5, System.nanoTime());
+                            e.setHasLoadedPoisonEffect(true);
+                        }
+                    }
                     if (e.isDead()) {
                         coinManager.earn(e.getCoinDropAmount());   // ← mynt-drop
                         if (player.addXp((int) (e.getXpDropAmount() * upgradeManager.getFortunateMultiplier()))) {

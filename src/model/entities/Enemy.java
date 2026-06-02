@@ -11,6 +11,7 @@ public abstract class Enemy extends Entity {
     protected final static double DOT_TICK_SPEED = 0.5;
     protected double DOTCurrentTick = 0;
     protected double DOTDamage = 0;
+    protected boolean hasLoadedPoisonEffect = false;
 
     public Enemy(double x, double y, int size, int maxHealth, int movementSpeed,
                  int contactDamage, int textureID, int coinDropAmount, int xpDropAmount) {
@@ -43,7 +44,10 @@ public abstract class Enemy extends Entity {
                 takeProjectileDamage((int) (maxHealth * DOTDamage));
                 DOTCurrentTick = DOT_TICK_SPEED;
             }
-        } else DOTDamage = 0;
+        } else {
+            DOTDamage = 0;
+            hasLoadedPoisonEffect = false;
+        }
     }
 
     public void update(double deltaTime, double playerX, double playerY,
@@ -79,5 +83,17 @@ public abstract class Enemy extends Entity {
     }
     public double getDOTTickSpeed() {
         return DOT_TICK_SPEED;
+    }
+
+    public double getDOTCurrentTick() {
+        return DOTCurrentTick;
+    }
+
+    public boolean isHasLoadedPoisonEffect() {
+        return hasLoadedPoisonEffect;
+    }
+
+    public void setHasLoadedPoisonEffect(boolean hasLoadedPoisonEffect) {
+        this.hasLoadedPoisonEffect = hasLoadedPoisonEffect;
     }
 }

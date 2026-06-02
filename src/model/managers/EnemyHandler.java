@@ -8,13 +8,21 @@ import java.util.List;
 
 public class EnemyHandler {
     private final List<Enemy> enemies = new ArrayList<>();
+    private final EffectManager fxMan;
+
+    public EnemyHandler(EffectManager fxMan) {
+        this.fxMan = fxMan;
+    }
 
     public void update(double deltaTime, double playerX, double playerY,
-                        ProjectileManager projectileManager) {
+                       ProjectileManager projectileManager) {
         Iterator<Enemy> it = enemies.iterator();
         while (it.hasNext()) {
             Enemy e = it.next();
             e.update(deltaTime, playerX, playerY, projectileManager);
+            if (e.getDOTCurrentTick() > 0) {
+                fxMan.addEffect(e.getX(), e.getY(), 3, System.nanoTime());
+            }
             if (e.isDead()) it.remove();
         }
     }
@@ -46,6 +54,7 @@ public class EnemyHandler {
             for (Enemy enemy : enemies) {
                 if (targets > 0) {
                     if (enemy != e) {
+                        fxMan.addEffect(enemy.getX(), enemy.getY(), 4, System.nanoTime());
                         enemy.takeProjectileDamage(damage);
                         targets--;
                     }
