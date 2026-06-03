@@ -15,6 +15,7 @@ import view.ButtonType;
 import view.GameListener;
 import view.MainMenu;
 import util.settings.SettingsListener;
+import view.CreditsMenu;
 import view.ScoreboardMenu;
 import view.SettingsMenu;
 import view.WeaponSelectDialog;
@@ -68,6 +69,7 @@ public class Main extends Application implements GameListener, SettingsListener 
             case START -> showGameSetup();
             case SETTINGS -> new SettingsMenu(stage, this, this::showMainMenu, width, height, resolutionScale).show();
             case SCOREBOARD -> new ScoreboardMenu(stage, scoreManager, this::showMainMenu, width, height, resolutionScale).show();
+            case CREDITS -> new CreditsMenu(stage, this::showMainMenu, width, height, resolutionScale).show();
             case EXIT -> shutdown();
         }
     }

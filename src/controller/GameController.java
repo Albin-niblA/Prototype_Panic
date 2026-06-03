@@ -103,7 +103,7 @@ public class GameController {
                 handleStateInput();
                 world.update(delta, input, camera, now);
                 camera.follow(world.getPlayer());
-                renderer.render(gc, world);
+                renderer.render(gc, world, delta);
                 input.clearFrameState();
             }
         };
