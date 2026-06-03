@@ -80,7 +80,8 @@ public class IceMage extends Enemy {
                         x, y, PROJECTILE_RADIUS,
                         playerX, playerY,
                         SPECIAL_PROJECTILE_SPEED, PROJECTILE_TEXTURE_ID_SPECIAL,
-                        FREEZE_EFFECT_ID, SPECIAL_PROJECTILE_DAMAGE, 0, true
+                        FREEZE_EFFECT_ID,
+                        (int) (SPECIAL_PROJECTILE_DAMAGE * projectileDamageMultiplier), 0, true
                 );
                 shotCounter = 0;
             } else {
@@ -88,7 +89,8 @@ public class IceMage extends Enemy {
                 projectileManager.addProjectile(
                         x, y, PROJECTILE_RADIUS,
                         playerX, playerY,
-                        PROJECTILE_SPEED, PROJECTILE_TEXTURE_ID_BASIC, 0, PROJECTILE_DAMAGE, 0, true
+                        PROJECTILE_SPEED, PROJECTILE_TEXTURE_ID_BASIC, 0,
+                        (int) (PROJECTILE_DAMAGE * projectileDamageMultiplier), 0, true
                 );
             }
             shootTimer = SHOOT_COOLDOWN;

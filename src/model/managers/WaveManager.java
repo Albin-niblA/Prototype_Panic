@@ -67,10 +67,15 @@ public class WaveManager {
             e = new Bandit(x, y);
         } else if (rand.nextDouble() < 0.9){
             e = new IceMage(x, y);
-
         } else {
             e = new DemonSlime(x, y);
         }
+
+        int tier = currentWave / 3;
+        if (tier > 0) {
+            e.scaleStats(Math.pow(1.2, tier));
+        }
+
         eh.addEnemy(e);
     }
 

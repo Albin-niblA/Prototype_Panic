@@ -7,6 +7,7 @@ public abstract class Enemy extends Entity {
     protected int coinDropAmount;
     protected int xpDropAmount;
     protected boolean isBoss = false;
+    protected double projectileDamageMultiplier = 1.0;
     protected double DOTTimer = 0;
     protected final static double DOT_TICK_SPEED = 0.5;
     protected double DOTCurrentTick = 0;
@@ -68,6 +69,13 @@ public abstract class Enemy extends Entity {
             DOTDamage += damage;
             DOTTimer = timer;
         }
+    }
+
+    public void scaleStats(double multiplier) {
+        this.maxHealth = (int) (this.maxHealth * multiplier);
+        this.health = this.maxHealth;
+        this.contactDamage = (int) (this.contactDamage * multiplier);
+        this.projectileDamageMultiplier = multiplier;
     }
 
     public int getTextureID() {

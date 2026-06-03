@@ -68,7 +68,8 @@ public class Bandit extends Enemy {
             projectileManager.addProjectile(
                     x, y, PROJECTILE_RADIUS,
                     playerX, playerY,
-                    PROJECTILE_SPEED, PROJECTILE_TEXTURE_ID, 0, PROJECTILE_DAMAGE, 0, true
+                    PROJECTILE_SPEED, PROJECTILE_TEXTURE_ID, 0,
+                    (int) (PROJECTILE_DAMAGE * projectileDamageMultiplier), 0, true
             );
             shootTimer = SHOOT_COOLDOWN;
         }
