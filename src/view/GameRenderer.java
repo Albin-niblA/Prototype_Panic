@@ -48,7 +48,7 @@ public class GameRenderer {
         renderEnemies(gc, world, ox, oy);
         renderEffects(gc, world.getEffectManager(), ox, oy);
         hud.draw(gc, world, world.getUpgradeManager().getBLINK_COOLDOWN_DURATION(), world.getUpgradeManager().getBlinkCooldown(), delta);
-        overlay.draw(gc, world.getState());
+        overlay.draw(gc, world.getState(), world.getShopManager(), world.getCoinManager());
     }
 
     private void renderBackground(GraphicsContext gc, double ox, double oy) {

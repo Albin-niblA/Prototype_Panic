@@ -17,6 +17,7 @@ import model.weapon.Rocket;
 import model.weapon.Weapon;
 import model.weapon.WeaponType;
 import model.managers.CoinManager;
+import model.managers.ShopManager;
 
 public class GameWorld {
     public static final int WORLD_WIDTH = 3200;
@@ -31,6 +32,7 @@ public class GameWorld {
     private final UpgradeManager upgradeManager;
 
     private final CoinManager coinManager;
+    private final ShopManager shopManager;
     private Random rand = new Random();
 
     private GameState state = GameState.RUNNING;
@@ -46,6 +48,7 @@ public class GameWorld {
         coinManager = new CoinManager();
         projectileManager = new ProjectileManager(WORLD_WIDTH, WORLD_HEIGHT, upgradeManager);
         currentWeapon = Weapon.fromType(weaponType);
+        shopManager = new ShopManager(player, coinManager);
     }
 
     public void update(double delta, InputHandler input, Camera camera, long now) {
@@ -226,6 +229,26 @@ public class GameWorld {
             state = GameState.RUNNING;
         }
     }
+
+    public void openShop(){
+        if (state == GameState.RUNNING) {
+            state = GameState.SHOP;
+            shooting = false;
+            player.setMoving(false, false, false, false);
+        }
+    }
+
+    public void closeShop(){
+        if (state == GameState.SHOP) {
+            state = GameState.RUNNING;
+        }
+    }
+
+    public boolean buyShopItem(int index){
+        return shopManager.buyItem(index);
+    }
+
+    public ShopManager getShopManager() { return shopManager; }
 
     public GameState getState() { return state; }
     public Player getPlayer() { return player; }

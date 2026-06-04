@@ -1,6 +1,7 @@
 package model.items;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class Item {
     private String name;
@@ -14,20 +15,25 @@ public class Item {
     private final double attackSpeed;
     private final int onHit;
     private final int blinkDistance;
+    private final double healthPercent;
 
     public Item(String name, int textureID, int price, int movementSpeed, int health, int damage, double attackSpeed, int onHit, int blinkDistance) {
+        this(name, textureID, price, movementSpeed, health, 0.0, damage, attackSpeed, onHit, blinkDistance);
+    }
+    public Item(String name, int textureID, int price, int movementSpeed, int health, double healthPercent, int damage, double attackSpeed, int onHit, int blinkDistance){
         this.name = name;
         this.textureID = textureID;
         this.price = price;
         this.movementSpeed = movementSpeed;
         this.health = health;
+        this.healthPercent = healthPercent; // NYTT
         this.damage = damage;
         this.attackSpeed = attackSpeed;
         this.onHit = onHit;
         this.blinkDistance = blinkDistance;
+        this.description = new ArrayList<>(); // ÄNDRAT: var null innan → krasch
         formatDescription();
     }
-
     private void formatDescription() {
         if (movementSpeed > 0) {
             description.add("Movement speed: " + movementSpeed);
@@ -46,6 +52,9 @@ public class Item {
         }
         if (blinkDistance > 0) {
             description.add("Bonus blink distance: " + blinkDistance);
+        }
+        if (healthPercent > 0){
+            description.add("Life gain: +" + (int)(healthPercent * 100) + "% of max HP");
         }
     }
 
@@ -88,4 +97,6 @@ public class Item {
     public int getPrice() {
         return price;
     }
+    public double getHealthPercent(){
+        return healthPercent;}
 }

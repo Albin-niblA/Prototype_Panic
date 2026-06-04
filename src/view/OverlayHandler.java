@@ -16,6 +16,9 @@ import model.managers.UpgradeManager;
 import model.upgrades.Upgrades;
 import model.world.GameState;
 import util.images.TextureAtlas;
+import model.managers.ShopManager;
+import model.managers.CoinManager;
+import model.items.Item;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class OverlayHandler {
     private final TextureAtlas textures;
 
     private final List<Rectangle2D> cards = new ArrayList<>();
+    private final List<Rectangle2D> shopCards = new ArrayList<>();
     private List<Upgrades> upgrades;
     private boolean drawnUpgrade;
     private double mouseX;
@@ -74,11 +78,12 @@ public class OverlayHandler {
         pixelFontSmall = Font.font("Monospaced", 14 * resolutionScale);
     }
 
-    public void draw(GraphicsContext gc, GameState state) {
+    public void draw(GraphicsContext gc, GameState state, ShopManager shopManager, CoinManager coinManager) {
         switch (state) {
             case PAUSED -> drawPaused(gc);
             case GAME_OVER -> drawGameOver(gc);
             case UPGRADE -> drawUpgrade(gc);
+            case SHOP     -> drawShop(gc, shopManager, coinManager);
             default -> { }
         }
     }
@@ -336,6 +341,77 @@ public class OverlayHandler {
         for (int i = 0; i < lines.length; i++) {
             gc.fillText(lines[i], x + cardWidth / 2.0, y + 250 * resolutionScale + i * 30 * resolutionScale);
         }
+    }
+
+    private void drawShop(GraphicsContext gc, ShopManager shopManager, CoinManager coinManager) {
+        List<Item> items = shopManager.getShopItems();
+
+        drawCenteredOverlay(gc, 0.65,
+                "Shop", 72, Color.WHITE, height / 5.0,
+                new String[]{"Press B to close  |  Coins: " + coinManager.getBalance()},
+                height / 5.0 + 50 * resolutionScale);
+
+        int cardWidth  = width / 5;
+        int cardHeight = height / 2;
+        int spacing    = width / 16;
+        int totalWidth = items.size() * cardWidth + (items.size() - 1) * spacing;
+        int startX     = (width - totalWidth) / 2;
+        int cardY      = height / 3;
+
+        if (shopCards.isEmpty()) {
+            for (int i = 0; i < items.size(); i++) {
+                int x = startX + i * (cardWidth + spacing);
+                shopCards.add(new Rectangle2D(x, cardY, cardWidth, cardHeight));
+            }
+        }
+
+        for (int i = 0; i < items.size(); i++) {
+            int x = startX + i * (cardWidth + spacing);
+            drawShopCard(gc, items.get(i), x, cardY, cardWidth, cardHeight, i, coinManager);
+        }
+    }
+
+    private void drawShopCard(GraphicsContext gc, Item item, int x, int y,
+                              int cardWidth, int cardHeight, int index, CoinManager coinManager) {
+        boolean hovered   = shopCards.get(index).contains(mouseX, mouseY);
+        boolean canAfford = coinManager.canAfford(item.getPrice());
+
+        gc.setFill(hovered && canAfford
+                ? Color.color(0.3, 0.3, 0.5, 0.9)
+                : Color.color(0.15, 0.15, 0.25, 0.85));
+        double cr = 32 * resolutionScale;
+        gc.fillRoundRect(x, y, cardWidth, cardHeight, cr, cr);
+
+        gc.setStroke(canAfford ? Color.GOLD : Color.GRAY);
+        gc.setLineWidth(5);
+        gc.strokeRoundRect(x, y, cardWidth, cardHeight, cr, cr);
+
+        gc.setFont(Font.font("Montserrat Black", FontWeight.BOLD, 24 * resolutionScale));
+        gc.setFill(Color.WHITE);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText(item.getName(), x + cardWidth / 2.0, y + 50 * resolutionScale);
+
+        gc.setFont(Font.font("Times New Roman", 18 * resolutionScale));
+        gc.setFill(Color.LIGHTGRAY);
+        List<String> desc = item.getDescription();
+        for (int d = 0; d < desc.size(); d++) {
+            gc.fillText(desc.get(d), x + cardWidth / 2.0,
+                    y + 120 * resolutionScale + d * 28 * resolutionScale);
+        }
+
+        gc.setFont(Font.font("Montserrat Black", FontWeight.BOLD, 28 * resolutionScale));
+        gc.setFill(canAfford ? Color.GOLD : Color.RED);
+        gc.fillText(item.getPrice() + "g", x + cardWidth / 2.0, y + cardHeight - 20 * resolutionScale);
+    }
+
+    public int getClickedShopItem() {
+        for (int i = 0; i < shopCards.size(); i++) {
+            if (shopCards.get(i).contains(mouseX, mouseY)) {
+                shopCards.clear();
+                return i;
+            }
+        }
+        return -1;
     }
 
     private void dimBackground(GraphicsContext gc, double opacity) {

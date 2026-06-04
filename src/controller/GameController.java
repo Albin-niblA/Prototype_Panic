@@ -182,6 +182,23 @@ public class GameController {
             }
             world.resume();
         }
+        if(input.wasPressed(KeyCode.B)){
+            if(world.getState() == GameState.RUNNING){
+                world.openShop();
+            }
+            else if(world.getState() == GameState.SHOP){
+                world.closeShop();
+            }
+        }
+        if (world.getState() == GameState.SHOP){
+            renderer.getOverlay().setMouseCoords(input.getMouseX(), input.getMouseY());
+            if(input.wasMouseClicked()){
+                int clicked = renderer.getOverlay().getClickedShopItem();
+                if (clicked >= 0) world.buyShopItem(clicked);
+            }
+        }
+
+
     }
 
     public void setOnReturnToMenu(Runnable callback) {
