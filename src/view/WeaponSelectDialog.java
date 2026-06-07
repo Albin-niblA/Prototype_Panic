@@ -47,7 +47,7 @@ public class WeaponSelectDialog {
         titleFont = loadPixelFont(34 * resolutionScale);
         smallFont = loadPixelFont(13 * resolutionScale);
 
-        // ── Starfield ────────────────────────────────────────────────────────
+        // Starfield
         Canvas starCanvas = new Canvas(width, height);
         GraphicsContext gc = starCanvas.getGraphicsContext2D();
 
@@ -163,7 +163,7 @@ public class WeaponSelectDialog {
             }
         };
 
-        // ── Title ────────────────────────────────────────────────────────────
+        // Title
         Text title = new Text("GAME SETUP");
         title.setFont(titleFont);
         title.setFill(COLOR_TITLE);
@@ -174,7 +174,7 @@ public class WeaponSelectDialog {
         weaponLabel.setStroke(COLOR_OUTLINE);
         weaponLabel.setStrokeWidth(1);
 
-        // ── Stat panel (declared before weapon loop) ─────────────────────────
+        // Stat panel
         double pad      = 18 * resolutionScale;   // inner padding each side
         double panelW   = 360 * resolutionScale;  // total panel width
         double contentW = panelW - pad * 2;       // usable text/row width
@@ -203,7 +203,7 @@ public class WeaponSelectDialog {
         StackPane imagePicture = new StackPane(imageFrame, weaponImage);
         imagePicture.setAlignment(Pos.CENTER);
 
-        // Stat rows live here — width is constrained to contentW
+        // Stat rows live here - width is constrained to contentW
         VBox statContent = new VBox(10 * resolutionScale);
         statContent.setAlignment(Pos.TOP_LEFT);
         statContent.setMaxWidth(contentW);
@@ -304,7 +304,7 @@ public class WeaponSelectDialog {
             panelPane.setVisible(true);
         };
 
-        // ── Weapon selector row ──────────────────────────────────────────────
+        // Weapon selector row
         WeaponType[] weapons     = WeaponType.values();
         Text[]       weaponTexts = new Text[weapons.length];
 
@@ -352,7 +352,7 @@ public class WeaponSelectDialog {
         }
         updateWeaponColors.run();
 
-        // ── Final layout ─────────────────────────────────────────────────────
+        // Final layout
         Text startItem = createMenuItem("Start", () -> onStart.accept(selectedWeapon));
         Text backItem  = createMenuItem("Back",  onBack);
 
@@ -375,7 +375,7 @@ public class WeaponSelectDialog {
         });
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
+    // Helpers
 
     private Text createMenuItem(String label, Runnable action) {
         Text item = new Text(label);

@@ -112,12 +112,10 @@ public class OverlayHandler {
         gc.fillText(formatScore(displayedScore), centerX, baseY + 110 * resolutionScale);
 
         if (showInitialsEntry && !initialsConfirmed) {
-            // "NEW HIGH SCORE!" flash
             gc.setFill(Color.web("#FFD700"));
             gc.setFont(pixelFont);
             gc.fillText("NEW HIGH SCORE!", centerX, baseY + 160 * resolutionScale);
 
-            // "ENTER YOUR INITIALS"
             gc.setFill(Color.LIGHTGRAY);
             gc.setFont(pixelFontSmall);
             gc.fillText("ENTER YOUR INITIALS", centerX, baseY + 200 * resolutionScale);

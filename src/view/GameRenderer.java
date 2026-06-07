@@ -92,7 +92,7 @@ public class GameRenderer {
 
         // Red flash on damage: overlay a pre-baked solid-red version of the sprite
         // at fading alpha. Because tintImage() preserves per-pixel alpha, only the
-        // opaque parts of the character light up — never the transparent background.
+        // opaque parts of the character light up - never the transparent background.
         double cooldown = p.getDamageCooldown();
         if (cooldown > 0) {
             double t = cooldown / Entity.DAMAGE_COOLDOWN_DURATION;
@@ -150,21 +150,6 @@ public class GameRenderer {
         double explosionR = 150;
         gc.strokeOval(px - explosionR, py - explosionR, explosionR * 2, explosionR * 2);
     }
-
-    /*
-    private void renderEnemyProjectiles(GraphicsContext gc, EnemyProjectileManager epm,
-                                         double ox, double oy) {
-        for (int i = 0; i < epm.getCount(); i++) {
-            double px = epm.getX(i) - ox;
-            double py = epm.getY(i) - oy;
-            if (isOffscreen(px, py)) continue;
-
-            double r = epm.getRadius(i);
-            Image tex = textures.getProjectileTexture(epm.getTextureID(i));
-            double angle = Math.toDegrees(Math.atan2(epm.getVelY(i), epm.getVelX(i)));
-            drawSprite(gc, tex, px, py, r, angle);
-        }
-    }*/
 
     private void renderEffects(GraphicsContext gc, EffectManager em, double ox, double oy) {
         for (int i = 0; i < em.getCount(); i++) {
